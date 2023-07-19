@@ -1,0 +1,11 @@
+{
+  "/client-api/*": {
+    "target": "https://www.your-web.com/api",
+    "pathRewrite": {
+      "^/client-api": ""
+    },
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

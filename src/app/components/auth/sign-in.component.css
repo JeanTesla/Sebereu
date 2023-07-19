@@ -1,0 +1,41 @@
+.login-form {
+    height: 400px;
+    width: 400px;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 25px;
+    background-image: url("../../../assets/images/bg-login-form.jpg");
+}
+
+.login-form-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.app-logo {
+    font-family: "Pangolin";
+    font-size: 80px;
+    margin-bottom: 50px;
+}
+
+.app-developed-by {
+    font-family: "Pangolin";
+    font-size: 20px;
+    margin-top: 25px;
+}
+
+.field {
+    width: 80%;
+}
+
+.application-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-image: url("../../../assets/images/bg-image.jpg");
+}

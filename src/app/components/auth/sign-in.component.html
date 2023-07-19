@@ -1,0 +1,21 @@
+<div class="application-body">
+  <div class="login-form">
+    <div class="login-form-content">
+      <div>
+        <p class="app-logo">Sebereu</p>
+      </div>
+      <mat-form-field class="field" appearance="fill">
+        <mat-label>E-mail</mat-label>
+        <input matInput [formControl]="email" placeholder="Informe o seu e-mail">
+      </mat-form-field>
+      <mat-form-field class="field" appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput [formControl]="password" placeholder="Informe a sua senha">
+      </mat-form-field>
+      <button mat-fab extended (click)="doSignIn()" color="primary">
+        <mat-icon>login</mat-icon>Entrar
+      </button>
+      <p class="app-developed-by">Developed by JeanTesla</p>
+    </div>
+  </div>
+</div>

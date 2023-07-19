@@ -1,0 +1,50 @@
+mat-drawer {
+  width: 20%;
+  background-color: rgb(214, 214, 214);
+}
+
+mat-drawer-content {
+  height: 100vh;
+}
+
+.container {
+  height: 90%;
+  margin: 20px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.item {
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  background-color: rgb(162, 156, 168);
+}
+
+.profile {
+  max-width: 600px;
+  margin-bottom: 8px;
+  border-radius: 25px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.5), 0 8px 22px 0 rgba(0, 0, 0, 0.5);
+
+
+  .profile-image {
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 50px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-content {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+}
