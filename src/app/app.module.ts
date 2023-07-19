@@ -11,10 +11,13 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth/auth.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeModule } from './components/home/home.module';
+import { HttpStatusInterceptorService } from './services/interceptors/http-status-interceptor.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [
@@ -34,9 +37,17 @@ import { HomeModule } from './components/home/home.module';
     HttpClientModule,
     NoopAnimationsModule,
     AppRoutingModule,
-    HomeModule
+    HomeModule,
+    MatSnackBarModule
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpStatusInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
