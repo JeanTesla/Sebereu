@@ -9,11 +9,11 @@ const baseUrl: String = environment.api.server
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class InstrumentsService {
 
   constructor(private httpClient: HttpClient) { }
 
-  signIn(email: String, password: String): Observable<SignIn> {
-    return this.httpClient.post<SignIn>(baseUrl + "/api/auth/sign-in", { email, password })
+  getAll(): Observable<[]> {
+    return this.httpClient.get<[]>("../../assets/sources/instruments.json")
   }
 }

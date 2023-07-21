@@ -2,7 +2,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SignIn } from 'src/app/rest/interfaces/sign-in';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class SignInComponent {
 
   constructor(
     private signInService: AuthService,
-    private route: ActivatedRoute
+    private route: Router
   ) {
     this.email.setValue("jean@gmail.com");
     this.password.setValue("123456");
@@ -26,7 +26,7 @@ export class SignInComponent {
   doSignIn() {
     this.signInService.signIn(this.email.value, this.password.value)
       .subscribe((data: SignIn) => {
-
+        this.route.navigate(["/home"]);
       })
   }
 

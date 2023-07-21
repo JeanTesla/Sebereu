@@ -1,1 +1,74 @@
-<p>new-contribution works!</p>
+<mat-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="formInfo">
+        <form [formGroup]="formInfo">
+            <ng-template matStepLabel>Informações</ng-template>
+            <mat-grid-list cols="2" rowHeight="2:1" style="margin-top: 25px;">
+                <mat-grid-tile>
+                    <div class="form">
+                        <mat-form-field class="fields">
+                            <mat-label>Título</mat-label>
+                            <input matInput placeholder="Título da contribuição" formControlName="title" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Artista</mat-label>
+                            <input matInput placeholder="Artista" formControlName="artist" required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Arranjo</mat-label>
+                            <input matInput placeholder="Artista" formControlName="arrangement" required>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <section class="sheet-type-section">
+                        <label class="example-margin">Tipo de partitura:</label>
+                        <div>
+                            <mat-radio-group (change)="onSelectSheetType($event)" formControlName="sheetType">
+                                <mat-radio-button value="GRID">
+                                    Grade
+                                </mat-radio-button>
+                                <mat-radio-button value="INSTRUMENT">
+                                    Instrumento
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </section>
+
+                    <form class="example-form">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Number</mat-label>
+                            <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                                [formControl]="instrumentPicker" [matAutocomplete]="auto">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredOptions | async " [value]="option">
+                                    {{option}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </form>
+
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <div>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="formAdditionalInfo" label="Adicionais">
+        <form [formGroup]="formAdditionalInfo">
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+    </mat-step>
+</mat-stepper>

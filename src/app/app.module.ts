@@ -17,6 +17,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeModule } from './components/home/home.module';
 import { HttpStatusInterceptorService } from './services/interceptors/http-status-interceptor.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatOption, MatOptionModule } from '@angular/material/core';
 
 
 @NgModule({

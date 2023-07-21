@@ -8,21 +8,23 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatListModule} from '@angular/material/list';
-import {MatCardModule} from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 import { MyContributionsComponent } from './my-contributions/my-contributions.component';
 import { RouterModule } from '@angular/router';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { SearchComponent } from './search/search.component';
 import { NewContributionComponent } from './new-contribution/new-contribution.component';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatChipsModule} from '@angular/material/chips';
-
-
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatOptionModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -51,9 +53,14 @@ import {MatChipsModule} from '@angular/material/chips';
     MatTableModule,
     RouterModule,
     MatTabsModule,
-    MatChipsModule
+    MatChipsModule,
+    MatStepperModule,
+    MatGridListModule,
+    MatSlideToggleModule,
+    MatRadioModule,
+    MatOptionModule
   ],
-  schemas:[
+  schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ]
 })
