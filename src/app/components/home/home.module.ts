@@ -20,11 +20,13 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 import { SearchComponent } from './search/search.component';
 import { NewContributionComponent } from './new-contribution/new-contribution.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatChipGrid, MatChipsModule } from '@angular/material/chips';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatOptionModule } from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 @NgModule({
@@ -58,7 +60,10 @@ import { MatOptionModule } from '@angular/material/core';
     MatGridListModule,
     MatSlideToggleModule,
     MatRadioModule,
-    MatOptionModule
+    MatOptionModule,
+    MatChipsModule,
+    MatIconModule,
+    MatSelectModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

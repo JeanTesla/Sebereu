@@ -1,64 +1,124 @@
 <mat-stepper [linear]="true" #stepper>
-    <mat-step [stepControl]="formInfo">
+    <mat-step [stepControl]="formInfo" label="Adicionais">
         <form [formGroup]="formInfo">
-            <ng-template matStepLabel>Informações</ng-template>
-            <mat-grid-list cols="2" rowHeight="2:1" style="margin-top: 25px;">
+            <ng-template matStepLabel>Adicionais</ng-template>
+            <mat-grid-list cols="2" rowHeight="2:1" style="margin-top: 25px; height: 100%;">
                 <mat-grid-tile>
-                    <div class="form">
-                        <mat-form-field class="fields">
-                            <mat-label>Título</mat-label>
-                            <input matInput placeholder="Título da contribuição" formControlName="title" required>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Artista</mat-label>
-                            <input matInput placeholder="Artista" formControlName="artist" required>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Arranjo</mat-label>
-                            <input matInput placeholder="Artista" formControlName="arrangement" required>
-                        </mat-form-field>
-                    </div>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <section class="sheet-type-section">
-                        <label class="example-margin">Tipo de partitura:</label>
-                        <div>
-                            <mat-radio-group (change)="onSelectSheetType($event)" formControlName="sheetType">
-                                <mat-radio-button value="GRID">
-                                    Grade
-                                </mat-radio-button>
-                                <mat-radio-button value="INSTRUMENT">
-                                    Instrumento
-                                </mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                    </section>
+                    <div style="width: 100%; height: 100%;">
+                        <section>
+                            <label>Gênero musical:</label>
+                            <div>
+                                <mat-radio-group (change)="onSelectGenre($event)"
+                                     formControlName="musicalGenre">
+                                    <mat-radio-button value="UNIQUE" checked="true">
+                                        Único Gênero
+                                    </mat-radio-button>
+                                    <mat-radio-button value="POTPOURRI">
+                                        Pot-Pourri
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </section>
 
-                    <form class="example-form">
-                        <mat-form-field class="example-full-width">
-                            <mat-label>Number</mat-label>
-                            <input type="text" placeholder="Pick one" aria-label="Number" matInput
-                                [formControl]="instrumentPicker" [matAutocomplete]="auto">
-                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                <mat-option *ngFor="let option of filteredOptions | async " [value]="option">
-                                    {{option}}
+                        <mat-form-field *ngIf="isUniqueMusicalGenre">
+                            <mat-label>Selecione o gênero</mat-label>
+                            <mat-select formControlName="selectedMusicalGenre" name="genre">
+                                <mat-option *ngFor="let genre of genres" [value]="genre">
+                                    {{genre}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <mat-form-field class="example-chip-list" *ngIf="!isUniqueMusicalGenre">
+                            <mat-label>Informe o nome do gênero</mat-label>
+                            <mat-chip-grid #chipGrid aria-label="instrument selection">
+                                <mat-chip-row *ngFor="let genre of selectedGenres"
+                                    (removed)="removeSelectedGenre(genre)">
+                                    {{genre}}
+                                    <button matChipRemove [attr.aria-label]="'remove ' + genre">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                            </mat-chip-grid>
+                            <input #genreInput placeholder="Informe o nome do gênero"
+                                [formControl]="genrePicker" [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" />
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectMusicalGenre($event)">
+                                <mat-option *ngFor="let genre of filteredOptionsGenres | async" [value]="genre">
+                                    {{genre}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
-                    </form>
-
+                    </div>
                 </mat-grid-tile>
             </mat-grid-list>
-
             <div>
+                <button mat-button matStepperPrevious>Back</button>
                 <button mat-button matStepperNext>Next</button>
             </div>
         </form>
     </mat-step>
-    <mat-step [stepControl]="formAdditionalInfo" label="Adicionais">
-        <form [formGroup]="formAdditionalInfo">
+    <mat-step [stepControl]="formInfo">
+        <form [formGroup]="formInfo">
+            <ng-template matStepLabel>Informações</ng-template>
+            <mat-grid-list cols="2" rowHeight="2:1" style="margin-top: 25px; height: 100%;">
+                <mat-grid-tile>
+                    <div class="form">
+                        <mat-form-field class="fields">
+                            <mat-label>Título</mat-label>
+                            <input matInput placeholder="Título da contribuição" formControlName="title">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Artista</mat-label>
+                            <input matInput placeholder="Artista" formControlName="artist">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Arranjo</mat-label>
+                            <input matInput placeholder="Artista" formControlName="arrangement">
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <div style="width: 100%; height: 100%; overflow: auto;">
+                        <section>
+                            <label>Tipo de partitura:</label>
+                            <div>
+                                <mat-radio-group (change)="onSelectSheetType($event)" formControlName="sheetType">
+                                    <mat-radio-button value="GRID" checked="true">
+                                        Grade
+                                    </mat-radio-button>
+                                    <mat-radio-button value="INSTRUMENT">
+                                        Instrumento
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </section>
+
+                        <mat-form-field class="example-chip-list" *ngIf="!isGridSheetType">
+                            <mat-label>Informe o nome do(s) instrumento</mat-label>
+                            <mat-chip-grid #chipGrid aria-label="instrument selection">
+                                <mat-chip-row *ngFor="let instrument of selectedInstruments"
+                                    (removed)="removeSelectedInstrument(instrument)">
+                                    {{instrument}}
+                                    <button matChipRemove [attr.aria-label]="'remove ' + instrument">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                            </mat-chip-grid>
+                            <input #instrumentInput placeholder="Informe o nome do instrumento"
+                                [formControl]="instrumentPicker" [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" />
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectInstrument($event)">
+                                <mat-option *ngFor="let instrument of filteredOptionsInstruments | async" [value]="instrument">
+                                    {{instrument}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+
             <div>
-                <button mat-button matStepperPrevious>Back</button>
                 <button mat-button matStepperNext>Next</button>
             </div>
         </form>
@@ -71,4 +131,6 @@
             <button mat-button (click)="stepper.reset()">Reset</button>
         </div>
     </mat-step>
+    
 </mat-stepper>
+<button (click)="teste()" >QQQQQQQQQQQQQQQQQQQQQQ</button>

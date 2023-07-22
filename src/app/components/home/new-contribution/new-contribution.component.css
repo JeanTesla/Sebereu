@@ -6,6 +6,10 @@
     margin-top: 16px;
 }
 
+.example-chip-list {
+    width: 100%;
+}
+
 .form {
     display: flex;
     flex-direction: column;

@@ -4,7 +4,7 @@ mat-drawer {
 }
 
 mat-drawer-content {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .container {
@@ -46,5 +46,17 @@ mat-drawer-content {
     text-align: center;
     margin-top: 20px;
     font-weight: bold;
+  }
+}
+
+.menu {
+
+  .menu-item {
+    background-color: rgba(0, 0, 0, 0.267);
+    cursor: pointer;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
   }
 }

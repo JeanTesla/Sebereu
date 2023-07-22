@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormControl } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Validators, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SheetType } from '../../../enum/sheet-type.enum'
 import { MatRadioChange } from '@angular/material/radio';
 import { InstrumentsService } from 'src/app/services/source/instruments.service';
 import { Observable, map, of, startWith } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MusicalGenre } from 'src/app/enum/musical-genre.enum';
+import { GenresService } from 'src/app/services/source/genres.service';
+
 
 @Component({
   selector: 'app-new-contribution',
@@ -12,25 +17,45 @@ import { Observable, map, of, startWith } from 'rxjs';
 })
 export class NewContributionComponent implements OnInit {
 
-  formInfo = this._formBuilder.group({
-    title: ['', Validators.required],
-    artist: ['', Validators.required],
-    arrangement: ['', Validators.required],
-    sheetType: ['', Validators.required],
-    selectedInstruments: ['']
-  });
+  formInfo: FormGroup;
 
   instrumentPicker = new FormControl('');
-  formAdditionalInfo = this._formBuilder.group({});
-  sheetType: String = SheetType.GRID;
+  genrePicker = new FormControl('');
+
   isGridSheetType = true;
+  isUniqueMusicalGenre = true;
+
   instruments: String[] = [];
-  filteredOptions: Observable<String[]> = of();
+  genres: String[] = []
+
+  selectedInstruments: String[] = [];
+  selectedGenres: String[] = [];
+
+  filteredOptionsInstruments: Observable<String[]> = of();
+  filteredOptionsGenres: Observable<String[]> = of();
+
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  @ViewChild('instrumentInput')
+  instrumentInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('genreInput')
+  genreInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private _formBuilder: FormBuilder,
-    private instrumentsService: InstrumentsService
-  ) { }
+    private instrumentsService: InstrumentsService,
+    private genresService: GenresService
+  ) {
+
+    this.formInfo = _formBuilder.group({
+      title: [''],
+      artist: [''],
+      arrangement: [''],
+      sheetType: [SheetType.GRID],
+      musicalGenre: [MusicalGenre.UNIQUE],
+      selectedMusicalGenre: ['']
+    })
+  }
 
   ngOnInit(): void {
 
@@ -39,22 +64,64 @@ export class NewContributionComponent implements OnInit {
         this.instruments = data.map(el => el);
       })
 
-    this.filteredOptions = this.instrumentPicker.valueChanges.pipe(
+    this.filteredOptionsInstruments = this.instrumentPicker.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || ''))
+      map(value => this._filter(value || '', this.instruments))
     );
 
+    this.genresService.getAll()
+      .subscribe((data) => {
+        this.genres = data.map(el => el);
+      })
+
+    this.filteredOptionsGenres = this.genrePicker.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '', this.genres))
+    );
   }
 
   onSelectSheetType($event: MatRadioChange) {
     this.isGridSheetType = $event.value === SheetType.GRID;
+    if (this.isGridSheetType) this.selectedInstruments = [];
   }
 
-  private _filter(value: String): String[] {
-    const filterValue = value.toLowerCase();
+  onSelectGenre($event: MatRadioChange) {
+    this.isUniqueMusicalGenre = $event.value === MusicalGenre.UNIQUE;
+    if (this.isUniqueMusicalGenre) this.selectedGenres = [];
+  }
 
-    return this.instruments.filter(
-      option => option.toLowerCase()
-        .includes(filterValue));
+  onSelectMusicalGenre($event: MatAutocompleteSelectedEvent) {
+    this.selectedGenres.push($event.option.value)
+    this.genrePicker.setValue(null)
+    this.genreInput.nativeElement.value = '';
+  }
+
+  onSelectInstrument($event: MatAutocompleteSelectedEvent) {
+    this.selectedInstruments.push($event.option.value)
+    this.instrumentPicker.setValue(null)
+    this.instrumentInput.nativeElement.value = '';
+  }
+
+  removeSelectedInstrument(instrument: String) {
+    const index = this.selectedInstruments.indexOf(instrument);
+    if (index >= 0) this.selectedInstruments.splice(index, 1);
+  }
+
+  removeSelectedGenre(genre: String) {
+    const index = this.selectedGenres.indexOf(genre);
+    if (index >= 0) this.selectedGenres.splice(index, 1);
+  }
+
+  private _filter(value: String, data: String[]): String[] {
+    const filterValue = value.toLowerCase();
+    return data
+      .filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  teste() {
+    console.log(
+      this.formInfo.value,
+      this.selectedInstruments
+    );
   }
 }
