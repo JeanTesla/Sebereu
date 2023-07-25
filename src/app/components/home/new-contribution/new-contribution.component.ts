@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Validators, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SheetType } from '../../../enum/sheet-type.enum'
 import { MatRadioChange } from '@angular/material/radio';
 import { InstrumentsService } from 'src/app/services/source/instruments.service';
@@ -8,7 +8,13 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MusicalGenre } from 'src/app/enum/musical-genre.enum';
 import { GenresService } from 'src/app/services/source/genres.service';
+import { UploadFileService } from 'src/app/services/new-contribution/upload-file.service';
+import { UploadFileResponse } from 'src/app/rest/interfaces/upload-file-response';
+import { NewContributionService } from 'src/app/services/new-contribution/new-contribution.service';
+import { NewContributionRequest } from 'src/app/rest/interfaces/new-contribution-request';
+import { DialogRef } from '@angular/cdk/dialog';
 
+const userId: String | null = localStorage.getItem('userId');
 
 @Component({
   selector: 'app-new-contribution',
@@ -17,7 +23,11 @@ import { GenresService } from 'src/app/services/source/genres.service';
 })
 export class NewContributionComponent implements OnInit {
 
+  dialogRef: DialogRef = DialogRef<NewContributionComponent>;
+
   formInfo: FormGroup;
+
+  fileToUpload: Blob = new Blob();
 
   instrumentPicker = new FormControl('');
   genrePicker = new FormControl('');
@@ -44,7 +54,9 @@ export class NewContributionComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private instrumentsService: InstrumentsService,
-    private genresService: GenresService
+    private genresService: GenresService,
+    private uploadFileService: UploadFileService,
+    private newContributionService: NewContributionService
   ) {
 
     this.formInfo = _formBuilder.group({
@@ -53,7 +65,7 @@ export class NewContributionComponent implements OnInit {
       arrangement: [''],
       sheetType: [SheetType.GRID],
       musicalGenre: [MusicalGenre.UNIQUE],
-      selectedMusicalGenre: ['']
+      description: ['']
     })
   }
 
@@ -91,6 +103,7 @@ export class NewContributionComponent implements OnInit {
   }
 
   onSelectMusicalGenre($event: MatAutocompleteSelectedEvent) {
+    if (this.isUniqueMusicalGenre && this.selectedGenres.length !== 0) return;
     this.selectedGenres.push($event.option.value)
     this.genrePicker.setValue(null)
     this.genreInput.nativeElement.value = '';
@@ -118,10 +131,44 @@ export class NewContributionComponent implements OnInit {
       .filter(option => option.toLowerCase().includes(filterValue));
   }
 
+  handleFileToUpload($event: any) {
+    console.log($event.target.files[0]);
+    this.fileToUpload = $event.target.files[0];
+  }
+
+  doUploadFile(): Observable<UploadFileResponse> {
+    const formData: FormData = new FormData();
+    formData.append("file", this.fileToUpload)
+    formData.append("title", this.formInfo.value.title)
+    return this.uploadFileService.doUpload(formData)
+  }
+
+  finalizeNewContribution() {
+    this.doUploadFile()
+      .subscribe(data => {
+        const contributionData: NewContributionRequest = {
+          userId,
+          uploadId: data.uploadId,
+          ...this.formInfo.value,
+          genres: this.selectedGenres,
+          instruments: this.selectedInstruments,
+        }
+        this.newContributionService.contribute(contributionData)
+          .subscribe(response => {
+            console.log(response);
+
+          })
+      })
+  }
+
   teste() {
-    console.log(
-      this.formInfo.value,
-      this.selectedInstruments
-    );
+    this.doUploadFile()
+    const contributionData = {
+      ...this.formInfo.value,
+      instruments: this.selectedInstruments,
+      genres: this.selectedGenres
+    }
+    console.log(contributionData);
+
   }
 }

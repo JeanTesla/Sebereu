@@ -1,5 +1,17 @@
-<mat-tab-group>
-    <mat-tab label="Contribuir" > <app-new-contribution /> </mat-tab>
-    <mat-tab label="Pesquisar"> <app-search /> </mat-tab>
-    <mat-tab label="Minhas contribuições"> <app-my-contributions /></mat-tab>
-</mat-tab-group>
+<p>
+    <mat-toolbar>
+        <span>Pesquisar</span>
+        <div>
+            <mat-form-field class='input-search' appearance="outline">
+                <mat-label>O que queres encontrar?</mat-label>
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput>
+            </mat-form-field>
+        </div>
+        <div>
+            <button mat-fab color="primary" (click)="newContribution()" aria-label="button to open dialog to create contribuition">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+</p>

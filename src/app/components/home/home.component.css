@@ -8,7 +8,6 @@ mat-drawer-content {
 }
 
 .container {
-  height: 90%;
   margin: 20px;
   background-color: white;
   border-radius: 20px;
@@ -34,7 +33,6 @@ mat-drawer-content {
   margin: 10px;
   box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.5), 0 8px 22px 0 rgba(0, 0, 0, 0.5);
 
-
   .profile-image {
     border: 2px solid rgb(0, 0, 0);
     border-radius: 50px;
@@ -50,7 +48,6 @@ mat-drawer-content {
 }
 
 .menu {
-
   .menu-item {
     background-color: rgba(0, 0, 0, 0.267);
     cursor: pointer;
@@ -58,5 +55,9 @@ mat-drawer-content {
     display: flex;
     align-items: center;
     padding-left: 10px;
+
+    .a-link {
+      text-decoration: none;
+    }
   }
 }

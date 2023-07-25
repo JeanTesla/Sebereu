@@ -1,0 +1,22 @@
+mat-toolbar {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 30px;
+    background-color: rgb(172, 177, 175);
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.5), 0 8px 22px 0 rgba(0, 0, 0, 0.5);
+
+    .input-search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        align-content: center;
+
+        .mat-mdc-form-field-subscript-wrapper {
+            display: none;
+        }
+    }
+
+}

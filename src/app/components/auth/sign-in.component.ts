@@ -1,7 +1,7 @@
 import { AuthService } from '../../services/auth/auth.service';
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { SignIn } from 'src/app/rest/interfaces/sign-in';
+import { SignInRequest } from 'src/app/rest/interfaces/sign-in-request';
 import { Router } from '@angular/router';
 
 
@@ -25,7 +25,8 @@ export class SignInComponent {
 
   doSignIn() {
     this.signInService.signIn(this.email.value, this.password.value)
-      .subscribe((data: SignIn) => {
+      .subscribe((data: SignInRequest) => {
+        localStorage.setItem("userId", data.userId.toString())
         this.route.navigate(["/home"]);
       })
   }

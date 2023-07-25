@@ -20,14 +20,15 @@ import { WorkspaceComponent } from './workspace/workspace.component';
 import { SearchComponent } from './search/search.component';
 import { NewContributionComponent } from './new-contribution/new-contribution.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatChipGrid, MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatOptionModule } from '@angular/material/core';
-import {MatSelectModule} from '@angular/material/select';
-
-
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserModule } from '@angular/platform-browser';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NewContributionDialogComponent } from './new-contribution/new-contribution-dialog/new-contribution-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {MatSelectModule} from '@angular/material/select';
     MyContributionsComponent,
     WorkspaceComponent,
     SearchComponent,
-    NewContributionComponent
+    NewContributionComponent,
+    NewContributionDialogComponent
   ],
   imports: [
     CommonModule,
@@ -63,7 +65,9 @@ import {MatSelectModule} from '@angular/material/select';
     MatOptionModule,
     MatChipsModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    BrowserModule,
+    MatDialogModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

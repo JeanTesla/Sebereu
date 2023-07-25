@@ -10,11 +10,15 @@
             </mat-card>
             <mat-list class="menu">
                 <mat-list-item>
-                    <div class="menu-item">Pesquisar</div>
+                    <div class="menu-item">
+                        <a class='a-link' [routerLink]="'/home/'">Pesquisar</a>
+                    </div>
                 </mat-list-item>
                 <mat-divider></mat-divider>
                 <mat-list-item>
-                    <div class="menu-item">Minhas Contruibuições</div>
+                    <div class="menu-item">
+                        <a class='a-link' [routerLink]="'/home/my-contributions'">Minhas Contribuições</a>
+                    </div>
                 </mat-list-item>
                 <mat-divider></mat-divider>
               </mat-list>
@@ -22,7 +26,7 @@
     </mat-drawer>
     <mat-drawer-content>
         <div class="container">
-            <app-workspace></app-workspace>
+            <router-outlet></router-outlet>
         </div>
     </mat-drawer-content>
 </mat-drawer-container>
