@@ -18,7 +18,6 @@ import { RouterModule } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { WorkspaceComponent } from './workspace/workspace.component';
 import { SearchComponent } from './search/search.component';
-import { NewContributionComponent } from './new-contribution/new-contribution.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -28,16 +27,25 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatDialogModule } from '@angular/material/dialog';
-import { NewContributionDialogComponent } from './new-contribution/new-contribution-dialog/new-contribution-dialog.component';
+import { NewContributionDialogComponent } from './new-contribution-dialog/new-contribution-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SpinnerComponent } from '../utilities/spinner/spinner.component';
+import { InspectContributionComponent } from './my-contributions/inspect-contribution/inspect-contribution.component';
+import { SafePipe } from 'src/app/pipes/safe.pipe';
+import { EmptyPipe } from 'src/app/pipes/empty.pipe';
+
 
 @NgModule({
   declarations: [
     HomeComponent,
-    MyContributionsComponent,
     WorkspaceComponent,
     SearchComponent,
-    NewContributionComponent,
-    NewContributionDialogComponent
+    NewContributionDialogComponent,
+    MyContributionsComponent,
+    SpinnerComponent,
+    InspectContributionComponent,
+    SafePipe,
+    EmptyPipe
   ],
   imports: [
     CommonModule,
@@ -67,7 +75,8 @@ import { NewContributionDialogComponent } from './new-contribution/new-contribut
     MatIconModule,
     MatSelectModule,
     BrowserModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

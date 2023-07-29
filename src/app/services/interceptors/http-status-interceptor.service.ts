@@ -1,7 +1,7 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class HttpStatusInterceptorService implements HttpInterceptor {
@@ -12,12 +12,15 @@ export class HttpStatusInterceptorService implements HttpInterceptor {
         return next.handle(req).pipe(
             catchError(error => {
 
+                console.log(error);
+                
+
                 const errorMessage = error.error.message
                 this.snackBar.open(errorMessage, 'Exit', {
                     horizontalPosition: "right",
                     verticalPosition: "top",
                     duration: 3000
-                  });
+                });
 
                 return of([]);   // return empty Observable of array 
             }),

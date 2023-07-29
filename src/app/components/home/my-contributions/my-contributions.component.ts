@@ -1,28 +1,50 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NewContributionDialogComponent } from '../new-contribution-dialog/new-contribution-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Contribution } from 'src/app/rest/interfaces/contribution';
+import { GetAllContributionService } from 'src/app/services/my-contributions/get-all-contributions.service';
+import { InspectContributionComponent } from './inspect-contribution/inspect-contribution.component';
 
-export interface PeriodicElement {
-  name: string;
-  tags: String[];
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', tags: ["Forró", "mambo", "arranjo"], weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', tags: ["Forró", "mambo", "arranjo"], weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', tags: ["Forró", "mambo", "arranjo"], weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', tags: ["Forró", "mambo", "arranjo"], weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', tags: ["Forró", "mambo", "arranjo"], weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', tags: ["Forró", "mambo", "arranjo"], weight: 12.0107, symbol: 'C' },
-];
+const userId = localStorage.getItem('userId');
 
 @Component({
   selector: 'app-my-contributions',
   templateUrl: './my-contributions.component.html',
   styleUrls: ['./my-contributions.component.css']
 })
-export class MyContributionsComponent {
-  displayedColumns: string[] = ['contribution', 'upload', 'downloads', 'tags'];
-  dataSource = ELEMENT_DATA;
+export class MyContributionsComponent implements OnInit {
+  displayedColumns: string[] = ['title', 'artist', 'createdAt'];
+  dataSource: Contribution[] = [];
+
+  constructor(
+    private getAllContributionService: GetAllContributionService,
+    private dialog: MatDialog
+  ) { }
+
+  ngOnInit(): void {
+    this.getAllContributions();
+  }
+
+  getAllContributions() {
+    this.getAllContributionService.getAll(userId)
+      .subscribe(data => {
+        this.dataSource = data
+      })
+  }
+
+  newContribution() {
+    this.dialog.open(NewContributionDialogComponent, {
+      width: '70%',
+    })
+      .afterClosed().subscribe(() => {
+        this.getAllContributions()
+      })
+  }
+
+  inspectContribution(contributionId: string) {
+    this.dialog.open(InspectContributionComponent, {
+      width: '40%',
+      data: contributionId
+    })
+  }
 }

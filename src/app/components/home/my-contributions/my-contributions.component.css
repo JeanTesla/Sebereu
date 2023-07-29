@@ -4,3 +4,33 @@
     max-height: 400px;
     overflow: auto;
 }
+
+mat-toolbar {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 30px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5), 0 2px 12px 0 rgba(0, 0, 0, 0.5);
+
+    .input-search {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        align-content: center;
+
+        .mat-mdc-form-field-subscript-wrapper {
+            display: none;
+        }
+    }
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}

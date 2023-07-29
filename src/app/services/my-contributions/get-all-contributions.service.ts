@@ -2,18 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
-import { NewContributionRequest } from 'src/app/rest/interfaces/new-contribution-request';
+import { Contribution } from 'src/app/rest/interfaces/contribution';
 
 const baseUrl: String = environment.api.server
 
 @Injectable({
     providedIn: 'root'
 })
-export class NewContributionService {
+export class GetAllContributionService {
 
     constructor(private httpClient: HttpClient) { }
 
-    contribute(data: any): Observable<NewContributionRequest> {
-        return this.httpClient.post<NewContributionRequest>(baseUrl + "/api/contribution/", data)
+    getAll(userId: string | null): Observable<Contribution[]> {
+        return this.httpClient.get<Contribution[]>(baseUrl + "/api/contribution/?userId=" + userId)
     }
 }

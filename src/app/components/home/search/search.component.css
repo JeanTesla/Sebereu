@@ -1,0 +1,7 @@
+mat-list-item {
+    min-height: 550px;
+
+    iframe {
+        height: 250px;
+    }
+}

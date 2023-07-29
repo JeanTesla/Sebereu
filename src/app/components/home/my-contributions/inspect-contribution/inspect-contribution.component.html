@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>{{contributionDetail.title}} </h2>
+<mat-dialog-content>
+    <div class="content-elements">
+        <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+            <p><b>Titulo:</b> {{contributionDetail.title}}</p>
+            <p><b>Artista:</b> {{contributionDetail.artist}}</p>
+            <p><b>Arranjo:</b> {{contributionDetail.arrangement | empty }}</p>
+            <b>Descrição:</b>
+            <p style="word-break: break-all;"> {{contributionDetail.description | empty }}</p>
+        </div>
+
+        <div style="width: 100%;">
+            <b>Generos: &nbsp;&nbsp;&nbsp; {{contributionDetail.musicalGenre == "UNIQUE" ? "Único Gênero" :
+                "Pot-Pourri" }}</b>
+            <mat-chip-listbox aria-label="genres">
+                <mat-chip-option *ngFor="let genre of contributionDetail.genrePicker">
+                    {{genre}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+            <b>Instrumentos: &nbsp;&nbsp;&nbsp; {{contributionDetail.sheetType == "GRID" ? "Grade" :
+                "Selecionados" }}</b>
+            <mat-chip-listbox aria-label="instrument">
+                <mat-chip-option *ngFor="let instrument of contributionDetail.instrumentPicker">
+                    {{instrument}}
+                </mat-chip-option>
+            </mat-chip-listbox>
+        </div>
+    </div>
+    <hr>
+
+    <a style="display: flex; justify-content: center; align-items: center;" mat-stroked-button [href]="makeFileUrl()" target="_blank">
+        Visualizar <mat-icon>pageview</mat-icon></a>
+
+</mat-dialog-content>

@@ -19,7 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     AppComponent,
-    SignInComponent
+    SignInComponent,
   ],
   imports: [
     BrowserModule,

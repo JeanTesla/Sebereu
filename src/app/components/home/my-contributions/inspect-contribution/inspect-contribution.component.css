@@ -1,0 +1,8 @@
+mat-grid-tile {
+  background-color: antiquewhite;
+
+  .mat-grid-tile-content {
+    justify-content: flex-start;
+  }
+}
+

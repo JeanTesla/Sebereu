@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SheetType } from '../../../enum/sheet-type.enum'
 import { MatRadioChange } from '@angular/material/radio';
 import { InstrumentsService } from 'src/app/services/source/instruments.service';
@@ -12,25 +12,22 @@ import { UploadFileService } from 'src/app/services/new-contribution/upload-file
 import { UploadFileResponse } from 'src/app/rest/interfaces/upload-file-response';
 import { NewContributionService } from 'src/app/services/new-contribution/new-contribution.service';
 import { NewContributionRequest } from 'src/app/rest/interfaces/new-contribution-request';
-import { DialogRef } from '@angular/cdk/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const userId: String | null = localStorage.getItem('userId');
 
 @Component({
-  selector: 'app-new-contribution',
-  templateUrl: './new-contribution.component.html',
-  styleUrls: ['./new-contribution.component.css']
+  selector: 'app-new-contribution-dialog',
+  templateUrl: './new-contribution-dialog.component.html',
+  styleUrls: ['./new-contribution-dialog.component.css']
 })
-export class NewContributionComponent implements OnInit {
-
-  dialogRef: DialogRef = DialogRef<NewContributionComponent>;
+export class NewContributionDialogComponent {
 
   formInfo: FormGroup;
+  formAdditionalInfo: FormGroup;
 
   fileToUpload: Blob = new Blob();
-
-  instrumentPicker = new FormControl('');
-  genrePicker = new FormControl('');
 
   isGridSheetType = true;
   isUniqueMusicalGenre = true;
@@ -41,8 +38,8 @@ export class NewContributionComponent implements OnInit {
   selectedInstruments: String[] = [];
   selectedGenres: String[] = [];
 
-  filteredOptionsInstruments: Observable<String[]> = of();
-  filteredOptionsGenres: Observable<String[]> = of();
+  filteredOptionsInstruments!: String[];
+  filteredOptionsGenres!: String[];
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -56,17 +53,25 @@ export class NewContributionComponent implements OnInit {
     private instrumentsService: InstrumentsService,
     private genresService: GenresService,
     private uploadFileService: UploadFileService,
-    private newContributionService: NewContributionService
+    private newContributionService: NewContributionService,
+    private dialogRef: MatDialogRef<NewContributionDialogComponent>,
+    private snackBar: MatSnackBar
   ) {
 
-    this.formInfo = _formBuilder.group({
-      title: [''],
-      artist: [''],
-      arrangement: [''],
-      sheetType: [SheetType.GRID],
-      musicalGenre: [MusicalGenre.UNIQUE],
-      description: ['']
+    this.formInfo = this._formBuilder.group({
+      title: ['', Validators.required],
+      artist: ['', Validators.required],
+      arrangement: ['Desconhecido'],
+      sheetType: [SheetType.GRID, Validators.required],
+      instrumentPicker: new FormControl([])
     })
+
+    this.formAdditionalInfo = this._formBuilder.group({
+      description: [''],
+      musicalGenre: [MusicalGenre.UNIQUE, Validators.required],
+      genrePicker: new FormControl([], Validators.required)
+    })
+
   }
 
   ngOnInit(): void {
@@ -76,25 +81,34 @@ export class NewContributionComponent implements OnInit {
         this.instruments = data.map(el => el);
       })
 
-    this.filteredOptionsInstruments = this.instrumentPicker.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '', this.instruments))
-    );
-
     this.genresService.getAll()
       .subscribe((data) => {
         this.genres = data.map(el => el);
       })
+  }
 
-    this.filteredOptionsGenres = this.genrePicker.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '', this.genres))
-    );
+  filterOptions($event: any, filterName: String) {
+    const filterData = (data: String[]) => data
+      .filter(value => value.toLowerCase()
+        .includes(String($event.target.value).toLocaleLowerCase()))
+
+    if (filterName === "instruments")
+      this.filteredOptionsInstruments = filterData(this.instruments)
+
+    if (filterName === "genres")
+      this.filteredOptionsGenres = filterData(this.genres)
   }
 
   onSelectSheetType($event: MatRadioChange) {
     this.isGridSheetType = $event.value === SheetType.GRID;
     if (this.isGridSheetType) this.selectedInstruments = [];
+
+    if (this.isGridSheetType) {
+      this.formInfo.controls['instrumentPicker'].clearValidators();
+    } else {
+      this.formInfo.controls['instrumentPicker'].setValidators([Validators.required]);
+    }
+    this.formInfo.controls['instrumentPicker'].updateValueAndValidity();
   }
 
   onSelectGenre($event: MatRadioChange) {
@@ -105,13 +119,13 @@ export class NewContributionComponent implements OnInit {
   onSelectMusicalGenre($event: MatAutocompleteSelectedEvent) {
     if (this.isUniqueMusicalGenre && this.selectedGenres.length !== 0) return;
     this.selectedGenres.push($event.option.value)
-    this.genrePicker.setValue(null)
+    this.genrePicker?.setValue(null)
     this.genreInput.nativeElement.value = '';
   }
 
   onSelectInstrument($event: MatAutocompleteSelectedEvent) {
     this.selectedInstruments.push($event.option.value)
-    this.instrumentPicker.setValue(null)
+    this.instrumentPicker?.setValue(null)
     this.instrumentInput.nativeElement.value = '';
   }
 
@@ -125,22 +139,30 @@ export class NewContributionComponent implements OnInit {
     if (index >= 0) this.selectedGenres.splice(index, 1);
   }
 
-  private _filter(value: String, data: String[]): String[] {
-    const filterValue = value.toLowerCase();
-    return data
-      .filter(option => option.toLowerCase().includes(filterValue));
-  }
-
   handleFileToUpload($event: any) {
-    console.log($event.target.files[0]);
     this.fileToUpload = $event.target.files[0];
   }
 
   doUploadFile(): Observable<UploadFileResponse> {
+
+    if (this.fileToUpload.size === 0) {
+      this.snackBar.open("Nenhum arquivo selecionado", 'Exit', {
+        horizontalPosition: "center", verticalPosition: "bottom", duration: 3000
+      });
+      throw Error
+    }
     const formData: FormData = new FormData();
     formData.append("file", this.fileToUpload)
     formData.append("title", this.formInfo.value.title)
     return this.uploadFileService.doUpload(formData)
+  }
+
+  get genrePicker() {
+    return this.formInfo.get('genrePicker')
+  }
+
+  get instrumentPicker() {
+    return this.formInfo.get('instrumentPicker')
   }
 
   finalizeNewContribution() {
@@ -150,25 +172,12 @@ export class NewContributionComponent implements OnInit {
           userId,
           uploadId: data.uploadId,
           ...this.formInfo.value,
-          genres: this.selectedGenres,
-          instruments: this.selectedInstruments,
+          ...this.formAdditionalInfo.value
         }
         this.newContributionService.contribute(contributionData)
           .subscribe(response => {
-            console.log(response);
-
+            this.dialogRef.close()
           })
       })
-  }
-
-  teste() {
-    this.doUploadFile()
-    const contributionData = {
-      ...this.formInfo.value,
-      instruments: this.selectedInstruments,
-      genres: this.selectedGenres
-    }
-    console.log(contributionData);
-
   }
 }

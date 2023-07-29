@@ -1,31 +1,38 @@
-
+<p>
+    <mat-toolbar>
+        <span>Minhas Contribuições</span>
+        <div>
+            <button mat-fab color="primary" (click)="newContribution()"
+                aria-label="button to open dialog to create contribuition">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+</p>
 
 <div class="contribution-table">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-        <ng-container matColumnDef="contribution">
-            <th mat-header-cell *matHeaderCellDef> Contribution </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> Título </th>
+            <td mat-cell *matCellDef="let element">{{element.title}} </td>
         </ng-container>
-        
-        <ng-container matColumnDef="tags">
-            <th mat-header-cell *matHeaderCellDef> Tags </th>
+
+        <ng-container matColumnDef="artist">
+            <th mat-header-cell *matHeaderCellDef> Artista </th>
+            <td mat-cell *matCellDef="let element">{{element.artist}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef> Contribuido em </th>
             <td mat-cell *matCellDef="let element">
-                <mat-chip style="margin-right: 5px;" *ngFor="let tag of element.tags;">{{tag}}</mat-chip> 
+                {{element.createdAt | date : 'dd/MM/yyyy HH:mm'}}
             </td>
         </ng-container>
 
-        <ng-container matColumnDef="upload">
-            <th mat-header-cell *matHeaderCellDef> Uploaded at </th>
-            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="downloads">
-            <th mat-header-cell *matHeaderCellDef> Downloads </th>
-            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-        </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row (click)="inspectContribution(row.contributionId)" *matRowDef="let row; columns: displayedColumns;" style="cursor: pointer;"
+            class="example-element-row">
+        </tr>
     </table>
 </div>
