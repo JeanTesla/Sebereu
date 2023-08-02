@@ -12,47 +12,57 @@
 <mat-list>
     <mat-list-item *ngFor="let contributionDetail of foundContributions">
         <div class="item-content">
-            <!-- <div class="item-content-iframe">
-                <iframe *ngIf="false" [src]="makeFileUrl(contributionDetail.contributionId) | safe:'resourceUrl'" loading="lazy"
-                    frameborder="0"
-                    width="420px"
-                    height="400px">
+            <div class="item-content-iframe">
+                <iframe *ngIf="getMiniViewState(contributionDetail.contributionId)"
+                 [src]="makeFileUrl(contributionDetail.contributionId) | safe:'resourceUrl'"
+                    loading="lazy" frameborder="0" width="420px" height="550px">
                 </iframe>
-                <div *ngIf="true" style="height: 400px; width: 420px; background-color:blue;"></div>
-            </div> -->
-            <div class="item-content-detail">
-                <h2 mat-dialog-title>{{contributionDetail.title}} </h2>
-                <div class="content-elements">
-                    <div style="display: flex; flex-direction: column; justify-content: flex-start;">
-                        <p><b>Titulo:</b> {{contributionDetail.title}}</p>
-                        <p><b>Artista:</b> {{contributionDetail.artist}}</p>
-                        <p><b>Arranjo:</b> {{contributionDetail.arrangement | empty }}</p>
-                        <b>Descrição:</b>
-                        <p style="word-break: break-all;"> {{contributionDetail.description | empty }}</p>
+                <div *ngIf="!getMiniViewState(contributionDetail.contributionId)" (click)="showFilePreview(contributionDetail.contributionId)" class="mini-view">
+                    <div class="icon">
+                        <mat-icon [inline]="true" style="font-size: 36px;">remove_red_eye</mat-icon>
                     </div>
+                    <span>Clique para visualizar</span>
+                </div>
+            </div>
+            <div class="item-content-detail">
+                
+                <div class="content-elements">
+                    <div>
+                        <h2 mat-dialog-title>{{contributionDetail.title}} </h2>
+                        <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+                            <p><b>Titulo:</b> {{contributionDetail.title}}</p>
+                            <p><b>Artista:</b> {{contributionDetail.artist}}</p>
+                            <p><b>Arranjo:</b> {{contributionDetail.arrangement | empty }}</p>
+                            <b>Descrição:</b>
+                            <div style=" max-height: 200px; overflow:auto;">
+                                <p style="word-wrap: break-word;white-space: pre-line;"> {{contributionDetail.description | empty }}</p>
+                            </div>
+                           
+                        </div>
     
-                    <div style="width: 100%;">
-                        <b>Generos: &nbsp;&nbsp;&nbsp; {{contributionDetail.musicalGenre == "UNIQUE" ? "Único Gênero" :
-                            "Pot-Pourri" }}</b>
-                        <mat-chip-listbox aria-label="genres">
-                            <mat-chip-option *ngFor="let genre of contributionDetail.genrePicker">
-                                {{genre}}
-                            </mat-chip-option>
-                        </mat-chip-listbox>
-                        <b>Instrumentos: &nbsp;&nbsp;&nbsp; {{contributionDetail.sheetType == "GRID" ? "Grade" :
-                            "Selecionados" }}</b>
-                        <mat-chip-listbox aria-label="instrument">
-                            <mat-chip-option *ngFor="let instrument of contributionDetail.instrumentPicker">
-                                {{instrument}}
-                            </mat-chip-option>
-                        </mat-chip-listbox>
+                        <div style="width: 100%;">
+                            <b>Generos: &nbsp;&nbsp;&nbsp; {{contributionDetail.musicalGenre == "UNIQUE" ? "Único Gênero" :
+                                "Pot-Pourri" }}</b>
+                            <mat-chip-listbox aria-label="genres">
+                                <mat-chip-option *ngFor="let genre of contributionDetail.genrePicker">
+                                    {{genre}}
+                                </mat-chip-option>
+                            </mat-chip-listbox>
+                            <b>Instrumentos: &nbsp;&nbsp;&nbsp; {{contributionDetail.sheetType == "GRID" ? "Grade" :
+                                "Selecionados" }}</b>
+                            <mat-chip-listbox aria-label="instrument">
+                                <mat-chip-option *ngFor="let instrument of contributionDetail.instrumentPicker">
+                                    {{instrument}}
+                                </mat-chip-option>
+                            </mat-chip-listbox>
+                        </div>
+                    </div>
+                    <div>
+                        <a style="display: flex; justify-content: center; align-items: center;" mat-stroked-button
+                        [href]="makeFileUrl(contributionDetail.contributionId)" target="_blank">
+                        Visualizar <mat-icon>pageview</mat-icon></a>
                     </div>
                 </div>
-    
-                <a style="display: flex; justify-content: center; align-items: center;" mat-stroked-button
-                    [href]="makeFileUrl(contributionDetail.contributionId)" target="_blank">
-                    Visualizar <mat-icon>pageview</mat-icon></a>
-
             </div>
         </div>
         <hr>

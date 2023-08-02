@@ -6,6 +6,10 @@ import { SearchContributionService } from 'src/app/services/search/search-contri
 
 const baseUrl: String = environment.api.server;
 
+interface MiniView {
+  contributionId: String;
+  displayed: boolean
+}
 
 @Component({
   selector: 'app-search',
@@ -16,6 +20,7 @@ export class SearchComponent {
 
   form: FormGroup;
   foundContributions: ContributionDetail[] = [];
+  contributionsMiniView: Map<String, boolean> = new Map();
 
   makeFileUrl(contributionId: String) {
     return baseUrl + '/api/contribution/' + contributionId + '/file?&embedded=true';
@@ -36,13 +41,27 @@ export class SearchComponent {
   }
 
   getResult = () => {
-    const title = this.filterInput?.value;   
+    const title = this.filterInput?.value;
     this.searchContributionService.search(title)
       .subscribe(data => {
         const content: ContributionDetail[] = data.content;
-        console.log(content)
-        this.foundContributions = content
+        console.log(content);
+        this.foundContributions = content;
+        this.createMiniViewStates(content);
       })
+  }
+
+  createMiniViewStates(contributions: ContributionDetail[]) {
+    contributions.forEach(contribution =>
+      this.contributionsMiniView.set(contribution.contributionId, false))
+  }
+
+  getMiniViewState(contributionId: String): boolean | undefined {
+    return this.contributionsMiniView.get(contributionId)
+  }
+
+  showFilePreview(contributionId: String) {
+    this.contributionsMiniView.set(contributionId, true)
   }
 
   get filterInput() {
