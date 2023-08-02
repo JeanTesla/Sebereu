@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-workspace',
@@ -7,7 +6,5 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./workspace.component.css']
 })
 export class WorkspaceComponent {
-  constructor(
-    private dialog: MatDialog
-  ) {}
+  constructor() {}
 }

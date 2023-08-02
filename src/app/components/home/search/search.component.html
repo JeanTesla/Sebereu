@@ -1,10 +1,60 @@
+<div class="search-group">
+    <span style="margin-left: 20px; font-size: 22px;">Pesquisar</span>
+    <form [formGroup]="form" class="form-search">
+        <div>
+            <mat-form-field class='input-search' appearance="outline">
+                <mat-label>Pesquisar por Título ou Artista</mat-label>
+                <input type="text" aria-label="Pesquise" matInput formControlName="filter">
+            </mat-form-field>
+        </div>
+    </form>
+</div>
 <mat-list>
-    <mat-list-item>
-        <iframe height="500px" width="350px" src="http://localhost:8080/api/contribution/a0018eac-b8f6-4d80-8955-0b33b57b6cf0/file"
-         frameborder="1"></iframe>
+    <mat-list-item *ngFor="let contributionDetail of foundContributions">
+        <div class="item-content">
+            <!-- <div class="item-content-iframe">
+                <iframe *ngIf="false" [src]="makeFileUrl(contributionDetail.contributionId) | safe:'resourceUrl'" loading="lazy"
+                    frameborder="0"
+                    width="420px"
+                    height="400px">
+                </iframe>
+                <div *ngIf="true" style="height: 400px; width: 420px; background-color:blue;"></div>
+            </div> -->
+            <div class="item-content-detail">
+                <h2 mat-dialog-title>{{contributionDetail.title}} </h2>
+                <div class="content-elements">
+                    <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+                        <p><b>Titulo:</b> {{contributionDetail.title}}</p>
+                        <p><b>Artista:</b> {{contributionDetail.artist}}</p>
+                        <p><b>Arranjo:</b> {{contributionDetail.arrangement | empty }}</p>
+                        <b>Descrição:</b>
+                        <p style="word-break: break-all;"> {{contributionDetail.description | empty }}</p>
+                    </div>
+    
+                    <div style="width: 100%;">
+                        <b>Generos: &nbsp;&nbsp;&nbsp; {{contributionDetail.musicalGenre == "UNIQUE" ? "Único Gênero" :
+                            "Pot-Pourri" }}</b>
+                        <mat-chip-listbox aria-label="genres">
+                            <mat-chip-option *ngFor="let genre of contributionDetail.genrePicker">
+                                {{genre}}
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                        <b>Instrumentos: &nbsp;&nbsp;&nbsp; {{contributionDetail.sheetType == "GRID" ? "Grade" :
+                            "Selecionados" }}</b>
+                        <mat-chip-listbox aria-label="instrument">
+                            <mat-chip-option *ngFor="let instrument of contributionDetail.instrumentPicker">
+                                {{instrument}}
+                            </mat-chip-option>
+                        </mat-chip-listbox>
+                    </div>
+                </div>
+    
+                <a style="display: flex; justify-content: center; align-items: center;" mat-stroked-button
+                    [href]="makeFileUrl(contributionDetail.contributionId)" target="_blank">
+                    Visualizar <mat-icon>pageview</mat-icon></a>
+
+            </div>
+        </div>
+        <hr>
     </mat-list-item>
-    <mat-divider></mat-divider>
-    <mat-list-item>Item 2</mat-list-item>
-    <mat-divider></mat-divider>
-    <mat-list-item>Item 3</mat-list-item>
-  </mat-list>
+</mat-list>

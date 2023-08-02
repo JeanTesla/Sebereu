@@ -1,4 +1,11 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { environment } from 'src/app/environments/environment';
+import { ContributionDetail } from 'src/app/rest/interfaces/contribution-detail';
+import { SearchContributionService } from 'src/app/services/search/search-contribution.service';
+
+const baseUrl: String = environment.api.server;
+
 
 @Component({
   selector: 'app-search',
@@ -7,4 +14,38 @@ import { Component } from '@angular/core';
 })
 export class SearchComponent {
 
+  form: FormGroup;
+  foundContributions: ContributionDetail[] = [];
+
+  makeFileUrl(contributionId: String) {
+    return baseUrl + '/api/contribution/' + contributionId + '/file?&embedded=true';
+  }
+
+  constructor(
+    private _formBuilder: FormBuilder,
+    private searchContributionService: SearchContributionService
+  ) {
+
+    this.form = this._formBuilder.group({
+      filter: [''],
+    })
+
+    this.getResult()
+
+    this.filterInput?.valueChanges.subscribe(this.getResult)
+  }
+
+  getResult = () => {
+    const title = this.filterInput?.value;   
+    this.searchContributionService.search(title)
+      .subscribe(data => {
+        const content: ContributionDetail[] = data.content;
+        console.log(content)
+        this.foundContributions = content
+      })
+  }
+
+  get filterInput() {
+    return this.form.get('filter');
+  }
 }

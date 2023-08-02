@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { SheetType } from '../../../enum/sheet-type.enum'
 import { MatRadioChange } from '@angular/material/radio';
 import { InstrumentsService } from 'src/app/services/source/instruments.service';
-import { Observable, map, of, startWith } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MusicalGenre } from 'src/app/enum/musical-genre.enum';

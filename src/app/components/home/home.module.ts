@@ -33,7 +33,8 @@ import { SpinnerComponent } from '../utilities/spinner/spinner.component';
 import { InspectContributionComponent } from './my-contributions/inspect-contribution/inspect-contribution.component';
 import { SafePipe } from 'src/app/pipes/safe.pipe';
 import { EmptyPipe } from 'src/app/pipes/empty.pipe';
-
+import {MatMenuModule} from '@angular/material/menu';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,9 @@ import { EmptyPipe } from 'src/app/pipes/empty.pipe';
     MatSelectModule,
     BrowserModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatMenuModule,
+    MatExpansionModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
