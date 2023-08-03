@@ -1,6 +1,5 @@
 mat-list-item {
-    display:contents;
-    
+    display:contents;   
 }
 
 .item-content {
@@ -50,6 +49,7 @@ mat-list-item {
     justify-content: space-between;
     align-items: center;
     border-radius: 30px;
+    margin-bottom: 20px;
     background-color: rgb(255, 255, 255);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5), 0 2px 12px 0 rgba(0, 0, 0, 0.5);
 }

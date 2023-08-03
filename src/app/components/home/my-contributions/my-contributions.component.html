@@ -36,3 +36,12 @@
         </tr>
     </table>
 </div>
+
+<mat-paginator #paginator
+                [length]="length"
+                [pageSize]="pageSize"
+                [pageIndex]="pageIndex"
+                [pageSizeOptions]="pageSizeOptions"
+                aria-label="Select page" 
+              (page)="handlePageEvent($event)">
+</mat-paginator>

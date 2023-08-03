@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 import { environment } from 'src/app/environments/environment';
 import { ContributionDetail } from 'src/app/rest/interfaces/contribution-detail';
 import { SearchContributionService } from 'src/app/services/search/search-contribution.service';
@@ -16,6 +17,11 @@ export class SearchComponent {
   form: FormGroup;
   foundContributions: ContributionDetail[] = [];
   contributionsMiniView: Map<String, boolean> = new Map();
+
+  length = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [1, 5, 10, 25, 50];
 
   makeFileUrl(contributionId: String) {
     return baseUrl + '/api/contribution/' + contributionId + '/file?&embedded=true';
@@ -36,11 +42,12 @@ export class SearchComponent {
   }
 
   getResult = () => {
-    const title = this.filterInput?.value;
-    this.searchContributionService.search(title)
+    const filter = this.filterInput?.value;
+    this.searchContributionService.search(filter, this.pageIndex, this.pageSize)
       .subscribe(data => {
         const content: ContributionDetail[] = data.content;
         console.log(content);
+        this.length = data.totalElements;
         this.foundContributions = content;
         this.createMiniViewStates(content);
       })
@@ -61,5 +68,13 @@ export class SearchComponent {
 
   get filterInput() {
     return this.form.get('filter');
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+
+    this.getResult();
   }
 }

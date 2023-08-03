@@ -12,9 +12,9 @@ export class SearchContributionService {
 
     constructor(private httpClient: HttpClient) { }
 
-    search(filter: string): Observable<any> {
+    search(filter: string, page: number, size: number): Observable<any> {
         return this.httpClient.get<any>(
-            baseUrl + "/api/search/?filter=" + filter
+            baseUrl + `/api/search/?filter=${filter}&page=${page}&size=${size}`
         )
     }
 }

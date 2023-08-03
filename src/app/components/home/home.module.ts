@@ -33,9 +33,10 @@ import { SpinnerComponent } from '../utilities/spinner/spinner.component';
 import { InspectContributionComponent } from './my-contributions/inspect-contribution/inspect-contribution.component';
 import { SafePipe } from 'src/app/pipes/safe.pipe';
 import { EmptyPipe } from 'src/app/pipes/empty.pipe';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { NullNumberPipe } from 'src/app/pipes/null-number.pipe';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { NullNumberPipe } from 'src/app/pipes/null-number.pipe';
     MatDialogModule,
     MatProgressSpinnerModule,
     MatMenuModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatPaginatorModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
