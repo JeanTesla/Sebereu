@@ -5,6 +5,7 @@ export interface ContributionDetail {
     contributionId: String;
     arrangement: String;
     artist: String;
+    views: Number;
     createdAt: String;
     description: String;
     genrePicker: String[];

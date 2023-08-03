@@ -6,11 +6,6 @@ import { SearchContributionService } from 'src/app/services/search/search-contri
 
 const baseUrl: String = environment.api.server;
 
-interface MiniView {
-  contributionId: String;
-  displayed: boolean
-}
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',

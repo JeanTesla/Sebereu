@@ -18,6 +18,7 @@ export class InspectContributionComponent implements OnInit {
 
   contributionId: string;
   contributionDetail: ContributionDetail = {
+    views: 0,
     contributionId: 'Aguarde',
     arrangement: 'Aguarde',
     artist: 'Aguarde',

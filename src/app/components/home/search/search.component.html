@@ -33,6 +33,7 @@
                             <p><b>Titulo:</b> {{contributionDetail.title}}</p>
                             <p><b>Artista:</b> {{contributionDetail.artist}}</p>
                             <p><b>Arranjo:</b> {{contributionDetail.arrangement | empty }}</p>
+                            <p><b>Visualizações:</b> {{contributionDetail.views | nullNumber}}</p>
                             <b>Descrição:</b>
                             <div style=" max-height: 200px; overflow:auto;">
                                 <p style="word-wrap: break-word;white-space: pre-line;"> {{contributionDetail.description | empty }}</p>

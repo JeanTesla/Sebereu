@@ -35,6 +35,7 @@ import { SafePipe } from 'src/app/pipes/safe.pipe';
 import { EmptyPipe } from 'src/app/pipes/empty.pipe';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { NullNumberPipe } from 'src/app/pipes/null-number.pipe';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     SpinnerComponent,
     InspectContributionComponent,
     SafePipe,
-    EmptyPipe
+    EmptyPipe,
+    NullNumberPipe
   ],
   imports: [
     CommonModule,
