@@ -23,9 +23,7 @@ export class SearchComponent {
   pageIndex = 0;
   pageSizeOptions = [1, 5, 10, 25, 50];
 
-  makeFileUrl(contributionId: String) {
-    return baseUrl + '/api/contribution/' + contributionId + '/file?&embedded=true';
-  }
+  itemsPerPage = "1";
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -39,6 +37,10 @@ export class SearchComponent {
     this.getResult()
 
     this.filterInput?.valueChanges.subscribe(this.getResult)
+  }
+
+  makeFileUrl(contributionId: String) {
+    return baseUrl + '/api/contribution/' + contributionId + '/file?&embedded=true';
   }
 
   getResult = () => {
@@ -63,7 +65,8 @@ export class SearchComponent {
   }
 
   showFilePreview(contributionId: String) {
-    this.contributionsMiniView.set(contributionId, true)
+    this.contributionsMiniView.set(contributionId, !this.getMiniViewState(contributionId))
+    console.log("chamou");
   }
 
   get filterInput() {
@@ -76,5 +79,9 @@ export class SearchComponent {
     this.pageIndex = e.pageIndex;
 
     this.getResult();
+  }
+
+  setItemsPerRow(value: any){
+    this.itemsPerPage = value 
   }
 }

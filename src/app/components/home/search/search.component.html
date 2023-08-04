@@ -9,69 +9,90 @@
         </div>
     </form>
 </div>
-<mat-paginator #paginator [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+<div style="display: flex; flex-direction: row; justify-content: space-between;">
+    <mat-form-field appearance="outline">
+        <mat-label>Itens por linha</mat-label>
+        <mat-select  [(value)]="itemsPerPage">
+          <mat-option value="1">1</mat-option>
+          <mat-option value="2">2</mat-option>
+          <mat-option value="3">3</mat-option>
+          <mat-option value="4">4</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-paginator #paginator [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex"
     [pageSizeOptions]="pageSizeOptions" aria-label="Select page" (page)="handlePageEvent($event)">
 </mat-paginator>
-<mat-list>
-    <mat-list-item *ngFor="let contributionDetail of foundContributions">
+</div>
+
+
+<mat-grid-list [cols]="itemsPerPage" rowHeight="550px">
+    <mat-grid-tile *ngFor="let contributionDetail of foundContributions">
         <div class="item-content">
             <div class="item-content-iframe">
                 <iframe *ngIf="getMiniViewState(contributionDetail.contributionId)"
                     [src]="makeFileUrl(contributionDetail.contributionId) | safe:'resourceUrl'" loading="lazy"
-                    frameborder="0" width="420px" height="550px">
+                    frameborder="0" width="100%" height="90%">
                 </iframe>
-                <div *ngIf="!getMiniViewState(contributionDetail.contributionId)"
-                    (click)="showFilePreview(contributionDetail.contributionId)" class="mini-view">
-                    <div class="icon">
-                        <mat-icon [inline]="true" style="font-size: 36px;">remove_red_eye</mat-icon>
-                    </div>
-                    <span>Clique para visualizar</span>
-                </div>
-            </div>
-            <div class="item-content-detail">
+                <div *ngIf="!getMiniViewState(contributionDetail.contributionId)" class="mini-view">
+                    <div class="item-content-detail">
 
-                <div class="content-elements">
-                    <div>
-                        <h2 mat-dialog-title>{{contributionDetail.title}} </h2>
-                        <div style="display: flex; flex-direction: column; justify-content: flex-start;">
-                            <p><b>Titulo:</b> {{contributionDetail.title}}</p>
-                            <p><b>Artista:</b> {{contributionDetail.artist}}</p>
-                            <p><b>Arranjo:</b> {{contributionDetail.arrangement | empty }}</p>
-                            <p><b>Visualizações:</b> {{contributionDetail.views | nullNumber}}</p>
-                            <b>Descrição:</b>
-                            <div style=" max-height: 200px; overflow:auto;">
-                                <p style="word-wrap: break-word;white-space: pre-line;">
-                                    {{contributionDetail.description | empty }}</p>
+                        <div class="content-elements">
+                            <div>
+                                <h2 mat-dialog-title>{{contributionDetail.title}} </h2>
+                                <div style="display: flex; flex-direction: column; justify-content: flex-start;">
+                                    <p><b>Titulo:</b> {{contributionDetail.title}}</p>
+                                    <p><b>Artista:</b> {{contributionDetail.artist}}</p>
+                                    <p><b>Arranjo:</b> {{contributionDetail.arrangement | empty }}</p>
+                                    <p><b>Visualizações:</b> {{contributionDetail.views | nullNumber}}</p>
+                                    <b>Descrição:</b>
+                                    <div style=" max-height: 200px; overflow:auto;">
+                                        <p style="word-wrap: break-word;white-space: pre-line;">
+                                            {{contributionDetail.description | empty }}</p>
+                                    </div>
+
+                                </div>
+
+                                <div style="width: 100%;">
+                                    <b>Generos: &nbsp;&nbsp;&nbsp; {{contributionDetail.musicalGenre == "UNIQUE" ?
+                                        "Único Gênero" :
+                                        "Pot-Pourri" }}</b>
+                                    <mat-chip-listbox aria-label="genres">
+                                        <mat-chip-option *ngFor="let genre of contributionDetail.genrePicker">
+                                            {{genre}}
+                                        </mat-chip-option>
+                                    </mat-chip-listbox>
+                                    <b>Instrumentos: &nbsp;&nbsp;&nbsp; {{contributionDetail.sheetType == "GRID" ?
+                                        "Grade" :
+                                        "Selecionados" }}</b>
+                                    <mat-chip-listbox aria-label="instrument">
+                                        <mat-chip-option *ngFor="let instrument of contributionDetail.instrumentPicker">
+                                            {{instrument}}
+                                        </mat-chip-option>
+                                    </mat-chip-listbox>
+                                </div>
                             </div>
-
-                        </div>
-
-                        <div style="width: 100%;">
-                            <b>Generos: &nbsp;&nbsp;&nbsp; {{contributionDetail.musicalGenre == "UNIQUE" ? "Único
-                                Gênero" :
-                                "Pot-Pourri" }}</b>
-                            <mat-chip-listbox aria-label="genres">
-                                <mat-chip-option *ngFor="let genre of contributionDetail.genrePicker">
-                                    {{genre}}
-                                </mat-chip-option>
-                            </mat-chip-listbox>
-                            <b>Instrumentos: &nbsp;&nbsp;&nbsp; {{contributionDetail.sheetType == "GRID" ? "Grade" :
-                                "Selecionados" }}</b>
-                            <mat-chip-listbox aria-label="instrument">
-                                <mat-chip-option *ngFor="let instrument of contributionDetail.instrumentPicker">
-                                    {{instrument}}
-                                </mat-chip-option>
-                            </mat-chip-listbox>
                         </div>
                     </div>
-                    <div>
-                        <a style="display: flex; justify-content: center; align-items: center;" mat-stroked-button
-                            [href]="makeFileUrl(contributionDetail.contributionId)" target="_blank">
-                            Visualizar <mat-icon>pageview</mat-icon></a>
-                    </div>
+                </div>
+                <div style="display: flex; flex-direction:row;">
+
+                    <a style="display: flex; justify-content: center; align-items: center; width: 100%;"
+                        mat-stroked-button [href]="makeFileUrl(contributionDetail.contributionId)" target="_blank">
+                        Ver em aba <mat-icon>chrome_reader_mode</mat-icon></a>
+
+                    <button *ngIf="!getMiniViewState(contributionDetail.contributionId)"
+                        style="display: flex; justify-content: center; align-items: center; width:100%"
+                        mat-stroked-button (click)="showFilePreview(contributionDetail.contributionId)">
+                        Visualizar <mat-icon>pageview</mat-icon>
+                    </button>
+
+                    <button *ngIf="getMiniViewState(contributionDetail.contributionId)"
+                        style="display: flex; justify-content: center; align-items: center; width:100%"
+                        mat-stroked-button (click)="showFilePreview(contributionDetail.contributionId)">
+                        Informações <mat-icon>info</mat-icon>
+                    </button>
                 </div>
             </div>
         </div>
-        <hr>
-    </mat-list-item>
-</mat-list>
+    </mat-grid-tile>
+</mat-grid-list>
