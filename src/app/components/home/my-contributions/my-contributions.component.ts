@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NewContributionDialogComponent } from '../new-contribution-dialog/new-contribution-dialog.component';
+import { NewEditContributionDialogComponent } from '../new-edit-contribution-dialog/new-edit-contribution-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Contribution } from 'src/app/rest/interfaces/contribution';
 import { GetAllContributionService } from 'src/app/services/my-contributions/get-all-contributions.service';
 import { InspectContributionComponent } from './inspect-contribution/inspect-contribution.component';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import Page from 'src/app/models/page';
+import { PageEvent } from '@angular/material/paginator';
 
 const userId = localStorage.getItem('userId');
 
@@ -51,7 +50,7 @@ export class MyContributionsComponent implements OnInit {
   }
 
   newContribution() {
-    this.dialog.open(NewContributionDialogComponent, {
+    this.dialog.open(NewEditContributionDialogComponent, {
       width: '70%',
     })
       .afterClosed().subscribe(() => {

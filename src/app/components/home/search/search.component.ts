@@ -1,3 +1,4 @@
+import { GetContributionFileService } from './../../../services/source/get-contribution-file.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
@@ -27,7 +28,8 @@ export class SearchComponent {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private searchContributionService: SearchContributionService
+    private searchContributionService: SearchContributionService,
+    private getContributionFileService: GetContributionFileService
   ) {
 
     this.form = this._formBuilder.group({
@@ -40,7 +42,7 @@ export class SearchComponent {
   }
 
   makeFileUrl(contributionId: String) {
-    return baseUrl + '/api/contribution/' + contributionId + '/file?&embedded=true';
+    return this.getContributionFileService.makeFileUrl(contributionId);
   }
 
   getResult = () => {
@@ -50,8 +52,10 @@ export class SearchComponent {
         const content: ContributionDetail[] = data.content;
         console.log(content);
         this.length = data.totalElements;
-        this.foundContributions = content;
-        this.createMiniViewStates(content);
+        if(content.length){
+          this.foundContributions = content;
+          this.createMiniViewStates(content);  
+        }
       })
   }
 

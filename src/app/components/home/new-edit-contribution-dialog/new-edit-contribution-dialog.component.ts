@@ -14,15 +14,17 @@ import { NewContributionService } from 'src/app/services/new-contribution/new-co
 import { NewContributionRequest } from 'src/app/rest/interfaces/new-contribution-request';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GetContributionService } from 'src/app/services/my-contributions/get-contribution.service';
+import { ContributionDetail } from 'src/app/rest/interfaces/contribution-detail';
 
 const userId: String | null = localStorage.getItem('userId');
 
 @Component({
   selector: 'app-new-contribution-dialog',
-  templateUrl: './new-contribution-dialog.component.html',
-  styleUrls: ['./new-contribution-dialog.component.css']
+  templateUrl: './new-edit-contribution-dialog.component.html',
+  styleUrls: ['./new-edit-contribution-dialog.component.css']
 })
-export class NewContributionDialogComponent {
+export class NewEditContributionDialogComponent {
 
   formInfo: FormGroup;
   formAdditionalInfo: FormGroup;
@@ -54,7 +56,8 @@ export class NewContributionDialogComponent {
     private genresService: GenresService,
     private uploadFileService: UploadFileService,
     private newContributionService: NewContributionService,
-    private dialogRef: MatDialogRef<NewContributionDialogComponent>,
+    private dialogRef: MatDialogRef<NewEditContributionDialogComponent>,
+    private getContributionService: GetContributionService,
     private snackBar: MatSnackBar
   ) {
 
@@ -70,6 +73,18 @@ export class NewContributionDialogComponent {
       description: [''],
       musicalGenre: [MusicalGenre.UNIQUE, Validators.required],
       genrePicker: new FormControl([], Validators.required)
+    })
+
+    this.getContributionService.get("GTGcsokBuCdNyTAjbsMu")
+    .subscribe((contributionDetail: ContributionDetail) => {
+      console.log(contributionDetail);
+      this.formInfo.setValue({
+        title:'aaa',
+        artist:'bbbb',
+        arrangement:'cccc',
+        sheetType: SheetType.INSTRUMENT,
+        instrumentPicker: ['trompete']
+      })
     })
 
   }

@@ -28,7 +28,15 @@
     </div>
     <hr>
 
-    <a style="display: flex; justify-content: center; align-items: center;" mat-stroked-button [href]="makeFileUrl()" target="_blank">
-        Visualizar <mat-icon>pageview</mat-icon></a>
+    <div style="display: flex; flex-direction:row;">
+
+        <a style="display: flex; justify-content: center; align-items: center; width:100%" mat-stroked-button [href]="makeFileUrl()" target="_blank">
+            Visualizar <mat-icon>pageview</mat-icon></a>
+
+        <button style="display: flex; justify-content: center; align-items: center; width:100%"
+            mat-stroked-button> Editar <mat-icon>edit</mat-icon>
+
+        </button>
+    </div>
 
 </mat-dialog-content>

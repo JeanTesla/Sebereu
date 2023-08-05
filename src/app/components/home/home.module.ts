@@ -27,7 +27,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatDialogModule } from '@angular/material/dialog';
-import { NewContributionDialogComponent } from './new-contribution-dialog/new-contribution-dialog.component';
+import { NewEditContributionDialogComponent } from './new-edit-contribution-dialog/new-edit-contribution-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SpinnerComponent } from '../utilities/spinner/spinner.component';
 import { InspectContributionComponent } from './my-contributions/inspect-contribution/inspect-contribution.component';
@@ -43,7 +43,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     HomeComponent,
     WorkspaceComponent,
     SearchComponent,
-    NewContributionDialogComponent,
+    NewEditContributionDialogComponent,
     MyContributionsComponent,
     SpinnerComponent,
     InspectContributionComponent,
