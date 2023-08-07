@@ -3,6 +3,7 @@ import { SheetType } from "src/app/enum/sheet-type.enum";
 
 export interface ContributionDetail {
     contributionId: String;
+    userId: String;
     arrangement: String;
     artist: String;
     views: Number;

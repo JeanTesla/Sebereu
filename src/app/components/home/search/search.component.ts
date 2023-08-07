@@ -1,3 +1,4 @@
+import { GetProfileImageUrlService } from './../../../services/auth/get-profile-image-url.service';
 import { GetContributionFileService } from './../../../services/source/get-contribution-file.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -24,12 +25,13 @@ export class SearchComponent {
   pageIndex = 0;
   pageSizeOptions = [1, 5, 10, 25, 50];
 
-  itemsPerPage = "1";
+  itemsPerPage = "3";
 
   constructor(
     private _formBuilder: FormBuilder,
     private searchContributionService: SearchContributionService,
-    private getContributionFileService: GetContributionFileService
+    private getContributionFileService: GetContributionFileService,
+    private getProfileImageUrlService: GetProfileImageUrlService
   ) {
 
     this.form = this._formBuilder.group({
@@ -43,6 +45,10 @@ export class SearchComponent {
 
   makeFileUrl(contributionId: String) {
     return this.getContributionFileService.makeFileUrl(contributionId);
+  }
+
+  makeProfileImageUrl(userId: String | null){
+    return this.getProfileImageUrlService.getUrl(userId);
   }
 
   getResult = () => {

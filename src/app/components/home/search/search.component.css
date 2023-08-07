@@ -1,5 +1,5 @@
 mat-list-item {
-    display:contents;   
+    display: contents;
 }
 
 .item-content {
@@ -9,12 +9,12 @@ mat-list-item {
     height: 550px;
     margin-top: 30px;
     margin-bottom: 30px;
-    
+
     .item-content-iframe {
 
         width: 100%;
 
-        .mini-view{
+        .mini-view {
             width: 100%;
             height: 90%;
             background-color: rgb(214, 214, 214);
@@ -25,12 +25,12 @@ mat-list-item {
             flex-direction: column;
             cursor: pointer;
 
-            icon{
+            icon {
                 width: 2rem;
                 height: 2rem;
                 font-size: 2rem;
             }
-           
+
         }
     }
 
@@ -41,8 +41,17 @@ mat-list-item {
             height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
             justify-content: space-between;
             padding-left: 10px;
+        }
+
+        .profile-image {
+            border: 1px solid rgb(0, 0, 0);
+            border-radius: 50px;
+            width: 50px;
+            height: 50px;
         }
     }
 }

@@ -61,3 +61,15 @@ mat-drawer-content {
     }
   }
 }
+
+input[type="file"] {
+  display: none;
+}
+.profile-image-update-label {
+  color: #000000;
+  text-transform: uppercase;
+  text-align: center;
+  display: block;
+  margin-top: 10px;
+  cursor: pointer;
+}
