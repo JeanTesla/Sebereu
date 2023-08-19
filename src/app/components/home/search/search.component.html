@@ -37,7 +37,7 @@
                     <div class="item-content-detail">
 
                         <div class="content-elements">
-                            <img [src]="makeProfileImageUrl(contributionDetail.userId)" class="profile-image" alt="profile-image">
+                            <img [src]="makeProfileImageUrl(contributionDetail.userId)" onerror="this.src = '../../assets/images/OIP.jpeg'" class="profile-image" alt="profile-image">
                             <div> 
                                 <h2 mat-dialog-title style="display: flex; justify-content: center;">{{contributionDetail.title}} </h2>
                                 <div style="display: flex; flex-direction: column; justify-content: flex-start;">

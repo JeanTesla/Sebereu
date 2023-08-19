@@ -74,19 +74,6 @@ export class NewEditContributionDialogComponent {
       musicalGenre: [MusicalGenre.UNIQUE, Validators.required],
       genrePicker: new FormControl([], Validators.required)
     })
-
-    this.getContributionService.get("GTGcsokBuCdNyTAjbsMu")
-    .subscribe((contributionDetail: ContributionDetail) => {
-      console.log(contributionDetail);
-      this.formInfo.setValue({
-        title:'aaa',
-        artist:'bbbb',
-        arrangement:'cccc',
-        sheetType: SheetType.INSTRUMENT,
-        instrumentPicker: ['trompete']
-      })
-    })
-
   }
 
   ngOnInit(): void {
