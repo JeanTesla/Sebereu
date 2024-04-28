@@ -1,4 +1,4 @@
-import { BrowserAnimationsModule, provideAnimations } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ToastrModule } from "ngx-toastr";
@@ -15,7 +15,8 @@ import { AdminLayoutComponent } from './components/layouts/admin-layout/admin-la
 import { GetUserInfoService } from "./services/user/get-user-info.service";
 import { HttpStatusInterceptorService } from "./services/interceptors/http-status-interceptor.service";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from "@angular/mater
     RouterModule.forRoot(AppRoutes,{
       useHash: true
     }),
+    FormsModule,
     SidebarModule,
     NavbarModule,
     ToastrModule.forRoot(),
@@ -46,4 +48,3 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from "@angular/mater
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-

@@ -1,4 +1,14 @@
 export interface UserInfo {
-    name: string | null;
-    email: string | null;
+    userName: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    city: string | null;
+    address: string | null;
+    country: string | null;
+    state: string | null;
+    postalCode: string | null;
+    aboutMe: string | null;
+    quickMessage: string | null;
+    createdAt: string;
 }

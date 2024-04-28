@@ -12,8 +12,11 @@ export class HttpStatusInterceptorService implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
             catchError(error => {
-                console.log(error);
-                const errorMessage = error.error.message
+                let errorMessage = error.error.message
+                console.log(error.status);
+                if(error.status == 0){
+                    errorMessage = "Unable to connect to the server"
+                }
                 this.toastr.error(errorMessage, error.error.status, {
                     positionClass: 'toast-bottom-left'
                 })
