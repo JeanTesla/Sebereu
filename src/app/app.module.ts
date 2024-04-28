@@ -5,7 +5,6 @@ import { ToastrModule } from "ngx-toastr";
 
 import { SidebarModule } from './components/sidebar/sidebar.module';
 import { FooterModule } from './components/shared/footer/footer.module';
-import { NavbarModule} from './components/shared/navbar/navbar.module';
 import { FixedPluginModule} from './components/shared/fixedplugin/fixedplugin.module';
 
 import { AppComponent } from './app.component';
@@ -30,7 +29,6 @@ import { FormsModule } from "@angular/forms";
     }),
     FormsModule,
     SidebarModule,
-    NavbarModule,
     ToastrModule.forRoot(),
     FooterModule,
     FixedPluginModule,
