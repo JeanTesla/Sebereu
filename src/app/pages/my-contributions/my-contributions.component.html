@@ -1,0 +1,48 @@
+<h4>Minhas contribuições</h4>
+
+<div class="mat-elevation-z3">
+    <table mat-table [dataSource]="dataSource">
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> <b>Título</b></th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="composer">
+            <th mat-header-cell *matHeaderCellDef> <b>Compositor</b> </th>
+            <td mat-cell *matCellDef="let element"> {{element.composer}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef> <b>Data contribuição</b> </th>
+            <td mat-cell *matCellDef="let element"> {{element.createdAt | date : 'dd/MM/yyyy HH:mm'}} </td>
+        </ng-container>
+
+         <!-- Symbol Column -->
+         <ng-container matColumnDef="views">
+            <th mat-header-cell *matHeaderCellDef> <b>Visualizações</b> </th>
+            <td mat-cell *matCellDef="let element"> {{element.views}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> <b>Remover</b> </th>
+            <td mat-cell *matCellDef="let element">
+                <div (click)="changeVisibility(element.contributionId)"
+                [ngClass]="element.isVisible? 'trash' : 'recycling'"
+                title="Excluir ou remover aquivo">
+                  <mat-icon class="visibility"> {{element.isVisible? 'delete_forever' : 'recycling'}} </mat-icon>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator (page)="setPageConf($event)" [length]="totalItensFounded" [pageSizeOptions]="[8, 32, 64]"
+     showFirstLastButtons>
+    </mat-paginator>
+</div>

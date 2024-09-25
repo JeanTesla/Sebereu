@@ -1,0 +1,29 @@
+<div [ngClass]="isMobile ? 'header-mobile':'header-desktop'">
+  <mat-toolbar class="header">
+    <!-- Mobile Menu -->
+    <button mat-icon-button (click)="toggleMobileNav.emit()" *ngIf="!showToggle">
+      <i-tabler name="menu-2" class="icon-20 d-flex"></i-tabler>
+    </button>
+
+    <span class="flex-1-auto"></span>
+  
+    <button mat-icon-button aria-label="Notifications" class="mx-1">
+      <i-tabler class="d-flex" name="bell" matBadge="0" matBadgeColor="primary"></i-tabler>
+    </button>
+  
+    <img class="rounded-circle object-cover profile-image" style="cursor: pointer;" mat-icon-button
+      [matMenuTriggerFor]="profilemenu" [src]=" getProfileUserImageUrl()"
+      onerror="this.src = './assets/images/profile/profile-circle.svg'" alt="...">
+  
+    <mat-menu #profilemenu="matMenu" class="topbar-dd cardWithShadow">
+      <button mat-menu-item [routerLink]="['/home/profile']">
+        <mat-icon class="d-flex align-items-center"><i-tabler name="user" class="icon-18 d-flex"></i-tabler></mat-icon>Meu
+        perfil
+      </button>
+  
+      <div class="p-x-12 m-t-12">
+        <a (click)="doLogout()" mat-stroked-button color="primary" class="w-100">Logout</a>
+      </div>
+    </mat-menu>
+  </mat-toolbar>
+</div>

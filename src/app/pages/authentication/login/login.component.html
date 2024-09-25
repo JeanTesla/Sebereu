@@ -1,0 +1,41 @@
+<div class="blank-layout-container justify-content-center align-items-center bg-light-primary">
+  <div class="position-relative row w-100 h-100 bg-gredient justify-content-center background-image">
+    <div class="col-lg-4 d-flex align-items-center">
+      <mat-card class="cardWithShadow boxed-auth">
+        <mat-card-content class="p-32">
+          <div class="text-center">
+            <a>
+              <img src="../../../../assets/images/logos/logo-definitiva.svg" width="100%" class="align-middle m-2"
+                alt="logo" />
+            </a>
+          </div>
+
+          <form class="m-t-30" [formGroup]="authForm">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">E-mail ou nome de usuário</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput formControlName="email" />
+            </mat-form-field>
+            <!-- password -->
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Senha</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput type="password" formControlName="password" />
+            </mat-form-field>
+
+            <div class="d-flex align-items-center m-b-12">
+              <mat-checkbox color="primary">Entrar automaticamente</mat-checkbox>
+              <a [routerLink]="['/']" class="text-primary f-w-600 text-decoration-none m-l-auto f-s-14">Esqueceu sua
+                senha?</a>
+            </div>
+            <a (click)="doLogin()" mat-flat-button color="primary" class="w-100">
+              Fazer Login
+            </a>
+            <!-- input -->
+          </form>
+          <span class="d-block f-w-500 text-center m-t-24">Novo no Sebereu?
+            <a [routerLink]="['/register']" class="text-decoration-none text-primary f-w-500 f-s-14">Criar uma conta</a>
+          </span>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

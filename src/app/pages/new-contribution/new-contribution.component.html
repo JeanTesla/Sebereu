@@ -1,0 +1,156 @@
+<div class="row">
+    <div class="col-md-4">
+        <label class="file-zone">
+            <input type="file" [accept]="acceptedFileTypes" name="input-name" style="display: none;" (change)="onFileSelected($event)" />
+            <img src="../../../assets/images/backgrounds/preview.svg"
+                style="filter: invert(24%) sepia(94%) saturate(3238%) hue-rotate(214deg) brightness(107%) contrast(98%);"
+                height="90%" width="90%" alt="upload-file">
+            <b class="text-center" style="margin-right: 50px;">
+                {{selectedFile == null ? "Clique aqui para selecionar o arquivo": "Arquivo selecionado"}}
+            </b>
+        </label>
+    </div>
+    <div class="col">
+        <mat-stepper #stepper [linear]="true">
+            <mat-step [stepControl]="stepInfoFormGroup">
+                <form [formGroup]="stepInfoFormGroup">
+                    <ng-template matStepLabel>Informações</ng-template>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Título</mat-label>
+                                <input matInput placeholder="Título" formControlName="title" required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Compositor</mat-label>
+                                <input matInput placeholder="Compositor" formControlName="composer" required>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Arranjador</mat-label>
+                                <input matInput placeholder="Arranjador" formControlName="arrangement" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <mat-form-field style="width: 100%;" class="example-full-width" appearance="outline">
+                                <mat-label>Descrição (opcional)</mat-label>
+                                <textarea matInput rows="5" formControlName="description"></textarea>
+                              </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button class="btn btn-primary" matStepperNext>Próximo</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="stepGenInstFormGroup" label="Genero e Instrumentos">
+                <br>
+                <form [formGroup]="stepGenInstFormGroup">
+                    <p>Selecione pelo menos um gênero e um instrumento</p>
+                    <div class="row">
+                        <div class="col">
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <input type="text" placeholder="Generos" formControlName="genreSearch" matInput
+                                    [matAutocomplete]="auto1">
+                                <button mat-icon-button matSuffix>
+                                    <mat-icon>search</mat-icon>
+                                </button>
+                                <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete"
+                                    (optionSelected)="onSelectedGenre($event.option.value)">
+                                    <mat-option *ngFor="let option of filteredGenres" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                        <div class="col">
+                            <mat-form-field class="example-chip-list" style="width: 100%;" appearance="outline">
+                                <mat-label>Generos selecionados</mat-label>
+                                <mat-chip-grid #chipGrid aria-label="Enter genres">
+                                    <mat-chip-row *ngFor="let genre of selectedGenres" (removed)="removeGenre(genre)"
+                                        [editable]="false">
+                                        {{genre}}
+                                        <button matChipRemove [attr.aria-label]="'remove ' + genre">
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip-row>
+                                    <input placeholder="" [matChipInputFor]="chipGrid"/>
+                                </mat-chip-grid>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <mat-form-field appearance="outline" style="width: 100%;">
+                                <input type="text" placeholder="Instrumentos" formControlName="instrumentSearch"
+                                    matInput [matAutocomplete]="auto">
+                                <button mat-icon-button matSuffix>
+                                    <mat-icon>search</mat-icon>
+                                </button>
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                    (optionSelected)="onSelectedInstrument($event.option.value)">
+                                    <mat-option *ngFor="let option of filteredInstruments" [value]="option">
+                                        {{option}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                        <div class="col">
+                            <mat-form-field class="example-chip-list" style="width: 100%;" appearance="outline">
+                                <mat-label>Instrumentos selecionados</mat-label>
+                                <mat-chip-grid #chipGrid2 aria-label="Enter instruments">
+                                    <mat-chip-row *ngFor="let instrument of selectedInstruments"
+                                        (removed)="removeInstrument(instrument)" [editable]="false">
+                                        {{instrument}}
+                                        <button matChipRemove [attr.aria-label]="'remove ' + instrument">
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip-row>
+                                    <input placeholder="" [matChipInputFor]="chipGrid2" />
+                                </mat-chip-grid>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="col text-start">
+                                <button class="btn btn-secondary" matStepperPrevious>Anterior</button>
+                            </div>
+
+                            <div class="col text-end">
+                                <button class="btn btn-primary" matStepperNext>Próximo</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Finalizar</ng-template>
+                <div class="text-center">
+                    <h4>Obrigado pela contribuição!</h4>
+                    <mat-icon class="mt-4" style="transform: scale(2);">volunteer_activism</mat-icon>
+                </div>
+                <div class="mt-5">
+                    <div class="row">
+                        <div class="col text-start">
+                            <button class="btn btn-secondary" matStepperPrevious>Anterior</button>
+                        </div>
+                        <div class="col text-center">
+                            <button class="btn btn-danger" (click)="stepper.reset()">Descartar</button>
+                        </div>
+                        <div class="col text-end">
+                            <button (click)="saveContribution()" class="btn btn-primary">Finalizar Contribuição</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-step>
+        </mat-stepper>
+    </div>
+</div>

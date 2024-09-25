@@ -1,0 +1,77 @@
+<div class="container-detail" *ngIf="contributor !== undefined">
+    <div class="row" style="height: 100%;">
+        <div class="col-md info">
+            <div class="title">
+                <div class="col-11">
+                    <p class="title">{{contributionData.title}}</p>
+                </div>
+            </div>
+            <mat-card class="card">
+                <mat-card-content>
+                    <div class="row" style="width: 100%;">
+                        <div class="col">
+                            <h5>Arranjo</h5>
+                            <h6>{{contributionData.arrangement}}</h6>
+                        </div>
+                        <div class="col">
+                            <h5>Composição</h5>
+                            <h6>{{contributionData.composer}}</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" style="width: 100%;">
+                        <div class="col">
+                            <h5>Genero(s)</h5>
+                            <mat-chip-listbox aria-label="genres">
+                                <mat-chip *ngFor="let genre of contributionData.genrePicker;">
+                                    {{genre}}
+                                </mat-chip>
+                            </mat-chip-listbox>
+                        </div>
+                    </div>
+                    <div class="row mt-2" style="width: 100%;">
+                        <div class="col">
+                            <h5>Instrumento(s)</h5>
+                            <mat-chip-listbox aria-label="instruments">
+                                <mat-chip *ngFor="let instrument of contributionData.instrumentPicker;">
+                                    {{instrument}}
+                                </mat-chip>
+                            </mat-chip-listbox>
+                        </div>
+                    </div>
+                    <div class="row mt-2" style="width: 100%;">
+                        <div class="col">
+                            <h5>Descrição(s)</h5>
+                            {{contributionData.description == null ? 'Sem descrição' : contributionData.description}}
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <h5 class="text-center">Contribuição</h5>
+            <div class="mt-4 text-center">
+                <img class="rounded-circle profile-image" style="margin-top: -5px;" [src]="getProfileUserImageUrl()"
+                    onerror="this.src = './assets/images/profile/profile-circle.svg'" alt="...">
+            </div>
+            <div class="text-center mt-1">
+                <h5>{{contributor !== undefined ?"*" + contributor.userName : 'Não definido'}}</h5>
+            </div>
+            <div class="text-center mt-1">
+                {{contributionData.createdAt | date : 'dd/MM/yyyy HH:mm'}}
+            </div>
+            <div class="text-center mb-4">
+                {{contributor !== undefined ? contributor.firstName + ' ' + contributor.lastName : 'Não definido'}}
+            </div>
+
+        </div>
+
+        <div class="col" style="padding-bottom: 25px;">
+            <div class="file-zone">
+                <img src="../../../assets/images/backgrounds/preview.svg"
+                    style="filter: invert(82%) sepia(38%) saturate(7171%) hue-rotate(66deg) brightness(102%) contrast(92%);"
+                    height="90%" width="90%" alt="view-file" (click)="visualizeFile()">
+                <b class="text-center" style="margin-right: 30px;">Toque para visualizar</b>
+            </div>
+        </div>
+    </div>
+</div>

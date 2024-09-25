@@ -1,0 +1,11 @@
+.file-zone{
+    display: flex;
+    height: 100%;
+    border: 3px;
+    border-style:dashed;
+    border-color: #0d6efd; /*calculado em https://isotropic.co/tool/hex-color-to-css-filter/ */
+    color: #0d6efd;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}

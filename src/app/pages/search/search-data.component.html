@@ -1,0 +1,39 @@
+<div class="search-component-container">
+    <div  [ngClass]="isMobile ? 'container-form-mobile' : 'container-form-desktop'">
+        <form>
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <input type="text" placeholder="Pesquise" matInput [formControl]="searchInput" [matAutocomplete]="auto">
+                <button mat-icon-button matSuffix>
+                    <mat-icon>search</mat-icon>
+                </button>
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
+    </div>
+
+    <div class="table-view">
+        <div class='not-data' *ngIf="!contributions.length">
+            <mat-icon>search_off</mat-icon>
+            Nenhuma contribuição para mostrar
+        </div>
+        <mat-grid-list cols="4" rowHeight="100px" [gutterSize]="'10px'" *ngIf="contributions.length">
+            <mat-grid-tile *ngFor="let tile of contributions" [colspan]="tile.cols" [rowspan]="tile.rows">
+                <div class="contribution-content-hide">
+                    <div class="info" (click)="showFullContributionDetail(tile.contribution)">
+                        <div class="info-text">
+                            <h5>{{tile.contribution.title}}</h5>
+                            <h5>-</h5>
+                            <h5>{{tile.contribution.composer}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>
+<mat-paginator (page)="setPageConf($event)" [length]="totalItensFounded" [pageSizeOptions]="[8, 32, 64]" aria-label="Select page">
+</mat-paginator>
