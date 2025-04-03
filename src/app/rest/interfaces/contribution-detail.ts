@@ -2,16 +2,16 @@ import { MusicalGenre } from "../../enum/musical-genre.enum";
 import { SheetType } from "../../enum/sheet-type.enum";
 
 export interface ContributionDetail {
-    contributionId: String;
+    contributionId: string;
     userId: string;
-    arrangement: String;
-    composer: String;
+    arrangement: string;
+    composer: string;
     views: Number;
     createdAt: Date;
-    description: String;
-    genrePicker: String[];
-    instrumentPicker: String[];
+    description: string;
+    genrePicker: string[];
+    instrumentPicker: string[];
     musicalGenre: MusicalGenre;
     sheetType: SheetType;
-    title: String | undefined;
+    title: string;
 }

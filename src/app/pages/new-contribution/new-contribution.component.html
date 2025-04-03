@@ -1,15 +1,4 @@
 <div class="row">
-    <div class="col-md-4">
-        <label class="file-zone">
-            <input type="file" [accept]="acceptedFileTypes" name="input-name" style="display: none;" (change)="onFileSelected($event)" />
-            <img src="../../../assets/images/backgrounds/preview.svg"
-                style="filter: invert(24%) sepia(94%) saturate(3238%) hue-rotate(214deg) brightness(107%) contrast(98%);"
-                height="90%" width="90%" alt="upload-file">
-            <b class="text-center" style="margin-right: 50px;">
-                {{selectedFile == null ? "Clique aqui para selecionar o arquivo": "Arquivo selecionado"}}
-            </b>
-        </label>
-    </div>
     <div class="col">
         <mat-stepper #stepper [linear]="true">
             <mat-step [stepControl]="stepInfoFormGroup">
@@ -41,7 +30,7 @@
                             <mat-form-field style="width: 100%;" class="example-full-width" appearance="outline">
                                 <mat-label>Descrição (opcional)</mat-label>
                                 <textarea matInput rows="5" formControlName="description"></textarea>
-                              </mat-form-field>
+                            </mat-form-field>
                         </div>
                     </div>
                     <div class="text-end">
@@ -80,7 +69,7 @@
                                             <mat-icon>cancel</mat-icon>
                                         </button>
                                     </mat-chip-row>
-                                    <input placeholder="" [matChipInputFor]="chipGrid"/>
+                                    <input placeholder="" [matChipInputFor]="chipGrid" />
                                 </mat-chip-grid>
                             </mat-form-field>
                         </div>
@@ -123,13 +112,44 @@
                             <div class="col text-start">
                                 <button class="btn btn-secondary" matStepperPrevious>Anterior</button>
                             </div>
-
                             <div class="col text-end">
                                 <button class="btn btn-primary" matStepperNext>Próximo</button>
                             </div>
                         </div>
                     </div>
                 </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Arquivo</ng-template>
+                <div class="text-center" *ngIf="!isEditMode">
+                    <h6>Selecione o arquivo que você deseja contribuir. <br>
+                    Pode ser de qualquer tipo. Mas apenas arquivos PDF, imagem e áudio serão executados no navegador.<br>
+                    Outros tipos vão fazer um download automático.</h6>
+                </div>
+                <div class="text-center" *ngIf="isEditMode">
+                    <h5>Se você não quiser alterar o arquivo, apenas ignore essa etapa clicando em "Próximo".</h5>
+                </div>
+                <label class="file-zone">
+                    <input type="file" name="input-name" hidden
+                        (change)="onFileSelected($event)" aria-label="Selecionar arquivo">
+                    <div class="upload-container">
+                        <img src="../../../assets/images/backgrounds/preview.svg" class="upload-icon"
+                            alt="Ícone de upload">
+                        <span class="upload-text">
+                            {{ selectedFile ? "Arquivo selecionado" : "Clique para selecionar um arquivo" }}
+                        </span>
+                    </div>
+                </label>
+                <div class="mt-5">
+                    <div class="row">
+                        <div class="col text-start">
+                            <button class="btn btn-secondary" matStepperPrevious>Anterior</button>
+                        </div>
+                        <div class="col text-end">
+                            <button class="btn btn-primary" matStepperNext>Próximo</button>
+                        </div>
+                    </div>
+                </div>
             </mat-step>
             <mat-step>
                 <ng-template matStepLabel>Finalizar</ng-template>
@@ -145,8 +165,11 @@
                         <div class="col text-center">
                             <button class="btn btn-danger" (click)="stepper.reset()">Descartar</button>
                         </div>
-                        <div class="col text-end">
+                        <div class="col text-end" *ngIf="!isEditMode">
                             <button (click)="saveContribution()" class="btn btn-primary">Finalizar Contribuição</button>
+                        </div>
+                        <div class="col text-end" *ngIf="isEditMode">
+                            <button (click)="saveEditedContribution()" class="btn btn-primary">Finalizar edição</button>
                         </div>
                     </div>
                 </div>

@@ -31,7 +31,7 @@ export class SearchDataComponent {
     cols = 0;
 
     paginationIndex: number = 0;
-    paginationSize: number = 8;
+    paginationSize: number = 0;
 
     isMobile: boolean = this.deviceDetectorService.isMobile();
 
@@ -39,12 +39,14 @@ export class SearchDataComponent {
         private searchContributionService: SearchContributionService,
         private dialog: MatDialog,
         private deviceDetectorService: DeviceDetectorService
-    ) { }
+    ) { 
+        this.paginationSize = 4;
+    }
 
     ngOnInit() {
 
         if(this.deviceDetectorService.isMobile()) this.cols = 4; 
-        if(this.deviceDetectorService.isDesktop()) this.cols = 1;
+        if(this.deviceDetectorService.isDesktop()) this.cols = 2;
         if(this.deviceDetectorService.isTablet()) this.cols = 2;
         
         this.getContributionsPages();

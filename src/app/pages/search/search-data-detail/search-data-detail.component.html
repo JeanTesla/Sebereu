@@ -1,77 +1,60 @@
-<div class="container-detail" *ngIf="contributor !== undefined">
-    <div class="row" style="height: 100%;">
-        <div class="col-md info">
-            <div class="title">
-                <div class="col-11">
-                    <p class="title">{{contributionData.title}}</p>
+<div class="container-detail" style="background-color: #f0f8ff; padding: 20px; border-radius: 8px;">
+    <div class="row">
+        <!-- Informações principais -->
+        <div class="col-md-7 info" style="background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; padding: 20px;">
+            <h1 style="font-size: 2.5em; color: #4682b4; text-align: center;">{{contributionData.title}}</h1>
+            <div class="content">
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #2e8b57;">Arranjo:</h3>
+                    <p style="font-size: 1.2em;">{{contributionData.arrangement}}</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #2e8b57;">Composição:</h3>
+                    <p style="font-size: 1.2em;">{{contributionData.composer}}</p>
+                </div>
+                <hr style="border: 1px solid #87ceeb;">
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #2e8b57;">Gêneros:</h3>
+                    <ul style="list-style-type: disc; padding-left: 20px; font-size: 1.2em;">
+                        <li *ngFor="let genre of contributionData.genrePicker">{{genre}}</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #2e8b57;">Instrumentos:</h3>
+                    <ul style="list-style-type: disc; padding-left: 20px; font-size: 1.2em;">
+                        <li *ngFor="let instrument of contributionData.instrumentPicker">{{instrument}}</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: #2e8b57;">Descrição:</h3>
+                    <p style="font-size: 1.2em;">{{contributionData.description || 'Sem descrição'}}</p>
                 </div>
             </div>
-            <mat-card class="card">
-                <mat-card-content>
-                    <div class="row" style="width: 100%;">
-                        <div class="col">
-                            <h5>Arranjo</h5>
-                            <h6>{{contributionData.arrangement}}</h6>
-                        </div>
-                        <div class="col">
-                            <h5>Composição</h5>
-                            <h6>{{contributionData.composer}}</h6>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row" style="width: 100%;">
-                        <div class="col">
-                            <h5>Genero(s)</h5>
-                            <mat-chip-listbox aria-label="genres">
-                                <mat-chip *ngFor="let genre of contributionData.genrePicker;">
-                                    {{genre}}
-                                </mat-chip>
-                            </mat-chip-listbox>
-                        </div>
-                    </div>
-                    <div class="row mt-2" style="width: 100%;">
-                        <div class="col">
-                            <h5>Instrumento(s)</h5>
-                            <mat-chip-listbox aria-label="instruments">
-                                <mat-chip *ngFor="let instrument of contributionData.instrumentPicker;">
-                                    {{instrument}}
-                                </mat-chip>
-                            </mat-chip-listbox>
-                        </div>
-                    </div>
-                    <div class="row mt-2" style="width: 100%;">
-                        <div class="col">
-                            <h5>Descrição(s)</h5>
-                            {{contributionData.description == null ? 'Sem descrição' : contributionData.description}}
-                        </div>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-
-            <h5 class="text-center">Contribuição</h5>
-            <div class="mt-4 text-center">
-                <img class="rounded-circle profile-image" style="margin-top: -5px;" [src]="getProfileUserImageUrl()"
-                    onerror="this.src = './assets/images/profile/profile-circle.svg'" alt="...">
-            </div>
-            <div class="text-center mt-1">
-                <h5>{{contributor !== undefined ?"*" + contributor.userName : 'Não definido'}}</h5>
-            </div>
-            <div class="text-center mt-1">
-                {{contributionData.createdAt | date : 'dd/MM/yyyy HH:mm'}}
-            </div>
-            <div class="text-center mb-4">
-                {{contributor !== undefined ? contributor.firstName + ' ' + contributor.lastName : 'Não definido'}}
-            </div>
-
         </div>
 
-        <div class="col" style="padding-bottom: 25px;">
-            <div class="file-zone">
-                <img src="../../../assets/images/backgrounds/preview.svg"
-                    style="filter: invert(82%) sepia(38%) saturate(7171%) hue-rotate(66deg) brightness(102%) contrast(92%);"
-                    height="90%" width="90%" alt="view-file" (click)="visualizeFile()">
-                <b class="text-center" style="margin-right: 30px;">Toque para visualizar</b>
+        <!-- Informações do Contribuidor -->
+        <div class="col-md-5 text-center" style="padding: 20px;">
+            <div style="background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; padding: 20px;">
+                <h2 style="font-size: 2em; color: #4682b4;">Contribuição</h2>
+                <img class="rounded-circle profile-image" 
+                     style="width: 150px; height: 150px; margin: 20px auto;" 
+                     [src]="getProfileUserImageUrl()" 
+                     onerror="this.src='./assets/images/profile/profile-circle.svg'" 
+                     alt="Imagem do Contribuidor">
+                <p style="font-size: 1.3em; color: #2e8b57;"><strong>{{contributor.userName || 'Não definido'}}</strong></p>
+                <p style="font-size: 1.1em;">{{contributionData.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
+                <p style="font-size: 1.1em; color: #555;">{{contributor.firstName + ' ' + contributor.lastName || 'Não definido'}}</p>
             </div>
+            <div class="file-preview mt-4" style="text-align: center;">
+                <img src="../../../assets/images/backgrounds/preview.svg" 
+                     style="width: 80%; max-width: 200px; transition: transform 0.3s ease, opacity 0.3s ease;" 
+                     alt="Visualizar Arquivo" 
+                     (click)="visualizeFile()" 
+                     onmouseover="this.style.transform='scale(1.1)'; this.style.opacity='0.8';" 
+                     onmouseout="this.style.transform='scale(1)'; this.style.opacity='1';">
+                <p style="font-size: 1.2em; margin-top: 10px; color: #4682b4;"><strong>Toque para visualizar</strong></p>
+            </div>
+            
         </div>
     </div>
 </div>

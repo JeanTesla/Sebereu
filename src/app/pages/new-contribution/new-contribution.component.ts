@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { GenresService } from 'src/app/services/source/genres.service';
 import { InstrumentsService } from 'src/app/services/source/instruments.service';
-import { NewContributionRequest } from 'src/app/rest/interfaces/new-contribution-request';
 import { UploadFileService } from 'src/app/services/new-contribution/upload-file.service';
 import { NewContributionService } from 'src/app/services/new-contribution/new-contribution.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastService } from 'src/app/services/UX/toast.service';
-import { Router } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { GetAllContributionService } from 'src/app/services/my-contributions/get-all-contributions.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-new-contribution',
@@ -30,15 +28,12 @@ export class NewContributionComponent {
   selectedInstruments: Array<String> = [];
 
   selectedFile: File;
-  acceptedFileTypes = [
-    'application/pdf',
-    'image/jpeg',
-    'audio/mpeg',
-    'image/png'
-  ];
 
   addOnBlur = false;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
+
+  isEditMode: boolean = false;
+  editContributionId: string = "";
 
   stepInfoFormGroup = new FormGroup({
     title: new FormControl('', Validators.required),
@@ -59,9 +54,33 @@ export class NewContributionComponent {
     private instrumentsService: InstrumentsService,
     private uploadFileService: UploadFileService,
     private newContributionService: NewContributionService,
+    private myContributionsService: GetAllContributionService,
     private toastService: ToastService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private activeRoute: ActivatedRoute
+  ) {
+    this.editContributionId = this.activeRoute.snapshot.paramMap.get('id') ?? "";
+    if (this.editContributionId) {
+      this.isEditMode = true;
+      this.myContributionsService.getById(this.editContributionId)
+        .subscribe(result => {
+          this.stepInfoFormGroup.patchValue({
+            title: result.title,
+            composer: result.composer,
+            arrangement: result.arrangement,
+            description: result.description
+          });
+
+          this.selectedGenres = result.genrePicker;
+          this.selectedInstruments = result.instrumentPicker;
+
+          this.stepGenInstFormGroup.patchValue({
+            genres: this.selectedGenres,
+            instruments: this.selectedInstruments
+          });
+        })
+    }
+  }
 
   ngOnInit() {
 
@@ -92,7 +111,6 @@ export class NewContributionComponent {
       option.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         .toLowerCase().includes(filterValue));
   }
-
 
   removeGenre(genre: String): void {
     const index = this.selectedGenres.indexOf(genre);
@@ -130,7 +148,7 @@ export class NewContributionComponent {
 
   saveContribution() {
 
-    if(!this.selectedFile){
+    if (!this.selectedFile) {
       this.toastService.show("Nenhum arquivo selecionado.");
       return;
     }
@@ -159,6 +177,42 @@ export class NewContributionComponent {
               this.router.navigate(["/home"]);
             })
         })
+    }
+  }
+
+  async saveEditedContribution() {
+
+    if(this.isEditMode == false) return;
+
+    const hasFileSelected = this.selectedFile != null;
+    
+    if (this.stepInfoFormGroup.valid && this.stepGenInstFormGroup.valid) {
+      let uploadId = null;
+
+      if (hasFileSelected) {
+        const fileName = this.selectedFile.name;
+        const formData = new FormData();
+        formData.append("title", fileName);
+        formData.append("file", this.selectedFile);
+        uploadId = await firstValueFrom(this.uploadFileService.doUpload(formData));
+      }
+      
+      let editedContributionData = {
+        userId: this.userId,
+        uploadId: uploadId?.uploadId,
+        ... this.stepInfoFormGroup.value,
+        genrePicker: this.stepGenInstFormGroup.get('genres')?.value,
+        instrumentPicker: this.stepGenInstFormGroup.get('instruments')?.value
+      }
+
+      this.newContributionService.update(this.editContributionId, editedContributionData)
+        .subscribe(result => {
+          this.stepInfoFormGroup.reset();
+          this.stepGenInstFormGroup.reset();
+          this.toastService.show("Contribuição atualizada com sucesso");
+          this.router.navigate(["/home"]);
+        })
+
     }
   }
 

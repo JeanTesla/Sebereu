@@ -16,4 +16,8 @@ export class NewContributionService {
     contribute(data: any): Observable<NewContributionRequest> {
         return this.httpClient.post<NewContributionRequest>(baseUrl + "/api/contribution/", data)
     }
+
+    update(contributionId: string, data: any): Observable<NewContributionRequest> {
+        return this.httpClient.put<NewContributionRequest>(baseUrl + "/api/contribution/" + contributionId, data)
+    }
 }

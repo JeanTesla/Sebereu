@@ -1,0 +1,27 @@
+# Sistema de Build
+/node_modules/
+/dist/
+/out-tsc/
+
+# Logs e relatórios
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+report.[0-9]*.[0-9]*.[0-9]*.json
+
+# IDEs e editores
+/.idea/
+/.project
+/.vscode/
+/*.sublime-workspace
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Produção
+/.angular/cache/
+
+# Configurações de ambiente local
+/src/environments/environment.*.ts
+.angular/*
